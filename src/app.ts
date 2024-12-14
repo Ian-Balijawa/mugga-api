@@ -28,6 +28,7 @@ import { paymentRoutes } from './routes/payment.routes';
 import { activityLogRoutes } from './routes/activity-log.routes';
 import { branchRoutes } from './routes/branch.routes';
 import { CronService } from './services/cron.service';
+import { documentRoutes } from './routes/document.routes';
 
 // Global error handlers
 process.on( 'uncaughtException', ( error: Error ) => {
@@ -92,6 +93,7 @@ app.use( '/api/v1/borrower-groups', borrowerGroupRoutes );
 app.use( '/api/v1/payments', paymentRoutes );
 app.use( '/api/v1/activity-logs', activityLogRoutes );
 app.use( '/api/v1/branches', branchRoutes );
+app.use( '/api/v1/documents', documentRoutes );
 
 // Error handling
 app.use( errorHandler );
@@ -103,8 +105,16 @@ const startServer = async () => {
     Logger.info( 'Database connected successfully' );
 
     const port = env.PORT || 5000;
-    app.listen( port, () => {
+    const server = app.listen( port, () => {
       Logger.info( `Server is running on port ${port}` );
+    } );
+
+    // Graceful shutdown
+    process.on( 'SIGTERM', () => {
+      server.close( () => {
+        Logger.info( 'Server closed' );
+        process.exit( 0 );
+      } );
     } );
 
   } catch ( error ) {

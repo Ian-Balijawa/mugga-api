@@ -17,19 +17,19 @@ export class AuthService {
   private userService: UserService;
 
   constructor() {
-    this.verificationService = new VerificationService(redis);
+    this.verificationService = new VerificationService( redis );
     this.userService = new UserService();
   }
 
-  public async hashPassword(password: string): Promise<string> {
-    return hashPassword(password);
+  public async hashPassword( password: string ): Promise<string> {
+    return hashPassword( password );
   }
 
-  public async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
-    return compare(password, hashedPassword);
+  public async comparePasswords( password: string, hashedPassword: string ): Promise<boolean> {
+    return compare( password, hashedPassword );
   }
 
-  public async generateToken(userId: string, roles: string[]): Promise<string> {
+  public async generateToken( userId: string, roles: string[] ): Promise<string> {
     const token = jwt.sign(
       { userId, roles },
       env.JWT_SECRET,
@@ -45,94 +45,94 @@ export class AuthService {
     return token;
   }
 
-  public async validateToken(token: string): Promise<UserContext> {
+  public async validateToken( token: string ): Promise<UserContext> {
     try {
-      const decoded = jwt.verify(token, env.JWT_SECRET) as UserContext;
-      const cachedToken = await redis.get(`${this.TOKEN_PREFIX}${decoded.userId}`);
+      const decoded = jwt.verify( token, env.JWT_SECRET ) as UserContext;
+      const cachedToken = await redis.get( `${this.TOKEN_PREFIX}${decoded.userId}` );
 
-      if (!cachedToken || cachedToken !== token) {
-        throw new AppError(401, 'Invalid token');
+      if ( !cachedToken || cachedToken !== token ) {
+        throw new AppError( 401, 'Invalid token' );
       }
 
       return decoded;
-    } catch (error) {
-      throw new AppError(401, 'Invalid token');
+    } catch ( error ) {
+      throw new AppError( 401, 'Invalid token' );
     }
   }
 
-  public async invalidateToken(userId: string): Promise<void> {
-    await redis.del(`${this.TOKEN_PREFIX}${userId}`);
+  public async invalidateToken( userId: string ): Promise<void> {
+    await redis.del( `${this.TOKEN_PREFIX}${userId}` );
   }
 
-  async initiatePasswordReset(email: string): Promise<string> {
-    const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw new AppError(404, 'User not found');
+  async initiatePasswordReset( email: string ): Promise<string> {
+    const user = await this.userService.findByEmail( email );
+    if ( !user ) {
+      throw new AppError( 404, 'User not found' );
     }
 
-    const securityCode = await this.verificationService.generateSecurityCodeForReset(email);
+    const securityCode = await this.verificationService.generateSecurityCodeForReset( email );
     return securityCode;
   }
 
-  async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void> {
-    const user = await this.userService.findById(userId);
+  async changePassword( userId: string, currentPassword: string, newPassword: string ): Promise<void> {
+    const user = await this.userService.findById( userId );
 
-    const isValid = await this.comparePasswords(currentPassword, user.password);
-    if (!isValid) {
-      throw new AppError(400, 'Current password is incorrect');
+    const isValid = await this.comparePasswords( currentPassword, user.password );
+    if ( !isValid ) {
+      throw new AppError( 400, 'Current password is incorrect' );
     }
 
-    const hashedPassword = await this.hashPassword(newPassword);
-    await this.userService.update(userId, { password: hashedPassword });
-    await this.invalidateToken(userId);
+    const hashedPassword = await this.hashPassword( newPassword );
+    await this.userService.update( userId, { password: hashedPassword } );
+    await this.invalidateToken( userId );
   }
 
-  async verifyEmail(email: string, otp: string): Promise<void> {
-    const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw new AppError(404, 'User not found');
+  async verifyEmail( email: string, otp: string ): Promise<void> {
+    const user = await this.userService.findByEmail( email );
+    if ( !user ) {
+      throw new AppError( 404, 'User not found' );
     }
 
-    const isValid = await this.verificationService.verifyEmailOTP(email, otp);
-    if (!isValid) {
-      throw new AppError(400, 'Invalid or expired OTP');
+    const isValid = await this.verificationService.verifyEmailOTP( email, otp );
+    if ( !isValid ) {
+      throw new AppError( 400, 'Invalid or expired OTP' );
     }
 
-    await this.userService.update(user.id, { emailVerified: true });
+    await this.userService.update( user.id, { emailVerified: true } );
   }
 
-  async verifyPhone(userId: string, phone: string, otp: string): Promise<void> {
-    const isValid = await this.verificationService.verifyPhoneOTP(phone, otp);
-    if (!isValid) {
-      throw new AppError(400, 'Invalid or expired OTP');
+  async verifyPhone( userId: string, phone: string, otp: string ): Promise<void> {
+    const isValid = await this.verificationService.verifyPhoneOTP( phone, otp );
+    if ( !isValid ) {
+      throw new AppError( 400, 'Invalid or expired OTP' );
     }
 
-    await this.userService.update(userId, { phoneVerified: true });
+    await this.userService.update( userId, { phoneVerified: true } );
   }
 
-  async verifySecurityCode(email: string, code: string): Promise<void> {
-    const isValid = await this.verificationService.verifySecurityCode(email, code);
-    if (!isValid) {
-      throw new AppError(400, 'Invalid or expired security code');
+  async verifySecurityCode( email: string, code: string ): Promise<void> {
+    const isValid = await this.verificationService.verifySecurityCode( email, code );
+    if ( !isValid ) {
+      throw new AppError( 400, 'Invalid or expired security code' );
     }
   }
 
-  async resetPassword(email: string, newPassword: string, otp: string): Promise<void> {
-    const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw new AppError(404, 'User not found');
+  async resetPassword( email: string, newPassword: string, otp: string ): Promise<void> {
+    const user = await this.userService.findByEmail( email );
+    if ( !user ) {
+      throw new AppError( 404, 'User not found' );
     }
 
-    const isValid = await this.verificationService.verifySecurityCode(email, otp);
-    if (!isValid) {
-      throw new AppError(400, 'Invalid or expired OTP');
+    const isValid = await this.verificationService.verifySecurityCode( email, otp );
+    if ( !isValid ) {
+      throw new AppError( 400, 'Invalid or expired OTP' );
     }
 
-    const hashedPassword = await this.hashPassword(newPassword);
-    await this.userService.update(user.id, { password: hashedPassword });
+    const hashedPassword = await this.hashPassword( newPassword );
+    await this.userService.update( user.id, { password: hashedPassword } );
   }
 
-  async createLoanOfficer(data: {
+  async createLoanOfficer( data: {
     firstName: string;
     lastName: string;
     email: string;
@@ -141,53 +141,53 @@ export class AuthService {
     employeeId: string;
     isAdmin: boolean;
     isActive: boolean;
-  }): Promise<LoanOfficer> {
-    const user = await this.userService.create({
+  } ): Promise<LoanOfficer> {
+    const user = await this.userService.create( {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       phone: data.phone,
       password: data.password,
       roles: data.isAdmin ? ['admin', 'loan_officer'] : ['loan_officer']
-    });
+    } );
 
-    return AppDataSource.getRepository(LoanOfficer).save({
+    return AppDataSource.getRepository( LoanOfficer ).save( {
       user,
       employeeId: data.employeeId,
       isAdmin: data.isAdmin,
       isActive: data.isActive
-    });
+    } );
   }
 
-  async signin(email: string, password: string): Promise<{ token: string; user: User }> {
-    const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw new AppError(401, 'Invalid credentials');
+  async signin( email: string, password: string ): Promise<{ token: string; user: User }> {
+    const user = await this.userService.findByEmail( email );
+    if ( !user ) {
+      throw new AppError( 401, 'Invalid credentials' );
     }
 
-    const isValid = await this.comparePasswords(password, user.password);
-    if (!isValid) {
-      throw new AppError(401, 'Invalid credentials');
+    const isValid = await this.comparePasswords( password, user.password );
+    if ( !isValid ) {
+      throw new AppError( 401, 'Invalid credentials' );
     }
 
-    const token = await this.generateToken(user.id, user.roles);
+    const token = await this.generateToken( user.id, user.roles );
     return { token, user };
   }
 
-  async toggleLoanOfficerActivation(loanOfficerId: string, isActive: boolean): Promise<void> {
-    const loanOfficer = await AppDataSource.getRepository(LoanOfficer).findOne({
+  async toggleLoanOfficerActivation( loanOfficerId: string, isActive: boolean ): Promise<void> {
+    const loanOfficer = await AppDataSource.getRepository( LoanOfficer ).findOne( {
       where: { id: loanOfficerId },
       relations: ['user']
-    });
+    } );
 
-    if (!loanOfficer) {
-      throw new AppError(404, 'Loan officer not found');
+    if ( !loanOfficer ) {
+      throw new AppError( 404, 'Loan officer not found' );
     }
 
-    if (loanOfficer.isAdmin) {
-      throw new AppError(400, 'Cannot toggle activation for admin accounts');
+    if ( loanOfficer.isAdmin ) {
+      throw new AppError( 400, 'Cannot toggle activation for admin accounts' );
     }
 
-    await AppDataSource.getRepository(LoanOfficer).update(loanOfficerId, { isActive });
+    await AppDataSource.getRepository( LoanOfficer ).update( loanOfficerId, { isActive } );
   }
 }

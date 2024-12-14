@@ -13,6 +13,7 @@
 		"migration:revert": "typeorm-ts-node-esm migration:revert -d ./src/config/database.config.ts"
 	},
 	"dependencies": {
+		"@types/multer": "^1.4.12",
 		"bcrypt": "^5.1.1",
 		"class-validator": "^0.14.1",
 		"compression": "^1.7.4",
@@ -26,9 +27,11 @@
 		"ioredis": "^5.3.2",
 		"jsonwebtoken": "^9.0.2",
 		"morgan": "^1.10.0",
+		"multer": "^1.4.5-lts.1",
 		"mysql2": "^3.9.1",
 		"node-cron": "^3.0.3",
 		"nodemailer": "^6.9.9",
+		"sharp": "^0.33.5",
 		"swagger-jsdoc": "^6.2.8",
 		"swagger-ui-express": "^5.0.1",
 		"twilio": "^4.23.0",
@@ -42,12 +45,14 @@
 		"@types/cors": "^2.8.17",
 		"@types/express": "^4.17.21",
 		"@types/helmet": "^4.0.0",
-		"@types/node-cron": "^3.0.11",
 		"@types/jest": "^29.5.14",
 		"@types/jsonwebtoken": "^9.0.5",
 		"@types/morgan": "^1.9.9",
 		"@types/node": "^22.10.1",
+		"@types/node-cron": "^3.0.11",
 		"@types/nodemailer": "^6.4.14",
+		"@types/swagger-jsdoc": "^6.0.4",
+		"@types/swagger-ui-express": "^4.1.7",
 		"jest": "^29.7.0",
 		"ts-node": "^10.9.1"
 	}
