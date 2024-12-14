@@ -2,9 +2,8 @@
 module.exports = {
 	apps: [
 		{
-			name: "loan_management_api",
-			script: "npm",
-			args: "start",
+			name: "loan_management",
+			script: "dist/app.js",
 			watch: false,
 			ignore_watch: ["dist"],
 			watch_options: {
@@ -14,11 +13,8 @@ module.exports = {
 			exec_mode: "cluster",
 			autorestart: false,
 			env: {
-				NODE_ENV: "development"
+				NODE_ENV: "development",
 			},
-			env_production: {
-				NODE_ENV: "production"
-			}
-		}
-	]
+		},
+	],
 };
