@@ -1,0 +1,80 @@
+import { Request, Response, NextFunction } from 'express';
+import { ActivityLogService } from '../services/activity-log.service';
+import { ActivityType } from '../entities/activity-log.entity';
+import { UserService } from '../services/user.service';
+import { Logger } from '../utils/logger';
+
+const activityLogService = new ActivityLogService();
+const userService = new UserService();
+
+export function logActivity( entityType: string ) {
+    return async ( req: Request, res: Response, next: NextFunction ) => {
+        const originalJson = res.json;
+        res.json = function ( body: any ) {
+            const userContext = req.user!;
+
+            // Handle activity logging asynchronously without blocking response
+            ( async () => {
+                const user = await userService.findById( userContext.userId );
+                const method = req.method;
+                let type: ActivityType;
+                let description: string;
+                let entityId: string | undefined;
+
+                switch ( method ) {
+                    case 'POST':
+                        type = ActivityType.CREATE;
+                        description = `Created new ${entityType}`;
+                        entityId = body.id;
+                        await activityLogService.logEntityChange(
+                            type,
+                            entityType,
+                            entityId!,
+                            description,
+                            null,
+                            body,
+                            user,
+                            req
+                        );
+                        break;
+
+                    case 'PUT':
+                    case 'PATCH':
+                        type = ActivityType.UPDATE;
+                        entityId = req.params.id;
+                        description = `Updated ${entityType} #${entityId}`;
+                        await activityLogService.logEntityChange(
+                            type,
+                            entityType,
+                            entityId,
+                            description,
+                            req.body,
+                            body,
+                            user,
+                            req
+                        );
+                        break;
+
+                    case 'DELETE':
+                        type = ActivityType.DELETE;
+                        entityId = req.params.id;
+                        description = `Deleted ${entityType} #${entityId}`;
+                        await activityLogService.logEntityChange(
+                            type,
+                            entityType,
+                            entityId,
+                            description,
+                            req.body,
+                            null,
+                            user,
+                            req
+                        );
+                        break;
+                }
+            } )().catch( err => Logger.error( 'Activity logging error:', err ) );
+
+            return originalJson.call( this, body );
+        };
+        next();
+    };
+}
