@@ -1,4 +1,3 @@
-
 export interface SuccessResponse<T> {
   success: true;
   data: T;
@@ -17,4 +16,11 @@ export interface ErrorResponse {
 export interface UserContext {
   userId: string;
   roles: string[];
+}
+
+export interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
 }

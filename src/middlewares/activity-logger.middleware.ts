@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { ActivityLogService } from '../services/activity-log.service';
 import { ActivityType } from '../entities/activity-log.entity';
-import { UserService } from '../services/user.service';
 import { Logger } from '../utils/logger';
+import { UserService } from '../services/user.service';
 
 const activityLogService = new ActivityLogService();
 const userService = new UserService();

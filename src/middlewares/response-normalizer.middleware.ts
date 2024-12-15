@@ -8,36 +8,38 @@ export function normalizeResponse(
 ): void {
   const originalJson = res.json;
 
-  res.json = function(body: unknown): Response {
+  res.json = function ( body: unknown ): Response {
     // Error responses (4xx and 5xx)
-    if (res.statusCode >= 400) {
+    if ( res.statusCode >= 400 ) {
       const errorBody = body as { message?: string; code?: string; details?: unknown };
+      console.log( errorBody );
+      console.log( res )
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
-          message: errorBody.message || getDefaultErrorMessage(res.statusCode),
-          code: errorBody.code || getErrorCode(res.statusCode),
-          details: errorBody.details
+          message: errorBody.message || getDefaultErrorMessage( res.statusCode ),
+          code: errorBody.code || getErrorCode( res.statusCode ),
+          details: errorBody.details,
         }
       };
-      return originalJson.call(this, errorResponse);
+      return originalJson.call( this, errorResponse );
     }
 
     // Success responses (2xx)
     const successResponse: SuccessResponse<unknown> = {
       success: true,
       data: body,
-      message: getSuccessMessage(res.statusCode)
+      message: getSuccessMessage( res.statusCode )
     };
 
-    return originalJson.call(this, successResponse);
+    return originalJson.call( this, successResponse );
   };
 
   next();
 }
 
-function getDefaultErrorMessage(statusCode: number): string {
-  switch (statusCode) {
+function getDefaultErrorMessage( statusCode: number ): string {
+  switch ( statusCode ) {
     // 4xx Client Errors
     case 400:
       return 'Bad Request - The request could not be understood';
@@ -79,8 +81,8 @@ function getDefaultErrorMessage(statusCode: number): string {
   }
 }
 
-function getErrorCode(statusCode: number): string {
-  switch (statusCode) {
+function getErrorCode( statusCode: number ): string {
+  switch ( statusCode ) {
     // 4xx Client Errors
     case 400:
       return 'BAD_REQUEST';
@@ -122,8 +124,8 @@ function getErrorCode(statusCode: number): string {
   }
 }
 
-function getSuccessMessage(statusCode: number): string {
-  switch (statusCode) {
+function getSuccessMessage( statusCode: number ): string {
+  switch ( statusCode ) {
     case 200:
       return 'Request processed successfully';
     case 201:

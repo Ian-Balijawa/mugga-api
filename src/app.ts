@@ -9,26 +9,16 @@ import rateLimit from 'express-rate-limit';
 import { AppDataSource } from './config/database.config';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import env from './config/env.config';
-import { createRequestValidator } from './middlewares/request-validator.middleware';
-import { smsRateLimiter } from './middlewares/rate-limiter.middleware';
-import { z } from 'zod';
-import { userRoutes } from './routes/user.routes';
-import { borrowerRoutes } from './routes/borrower.routes';
-import { loanOfficerRoutes } from './routes/loan-officer.routes';
 import { Logger } from './utils/logger';
-import { normalizeResponse } from './middlewares/response-normalizer.middleware';
-import { authRoutes } from './routes/auth.routes';
-import { specs, swaggerUi } from './config/swagger.config';
-import { commentRoutes } from './routes/comment.routes';
-import { feeRoutes } from './routes/fee.routes';
-import { loanRoutes } from './routes/loan.routes';
-import { borrowerGroupRoutes } from './routes/borrower-group.routes';
-import { collateralRoutes } from './routes/collateral.routes';
-import { paymentRoutes } from './routes/payment.routes';
-import { activityLogRoutes } from './routes/activity-log.routes';
-import { branchRoutes } from './routes/branch.routes';
-import { CronService } from './services/cron.service';
-import { documentRoutes } from './routes/document.routes';
+import { setupSwagger } from './config/swagger.config';
+import { adminRoutes } from './routes/admin.routes';
+import { postRoutes } from './routes/post.routes';
+import { contactRoutes } from './routes/contact.routes';
+import { coachRoutes } from './routes/coach.routes';
+import { galleryRoutes } from './routes/gallery.routes';
+import { facilityRoutes } from './routes/facility.routes';
+import { programRoutes } from './routes/program.routes';
+import { registrationRoutes } from './routes/registration.routes';
 
 // Global error handlers
 process.on( 'uncaughtException', ( error: Error ) => {
@@ -43,6 +33,8 @@ process.on( 'unhandledRejection', ( reason: any, promise: Promise<any> ) => {
 
 const app = express();
 
+setupSwagger( app );
+
 // Middleware
 app.use( helmet() );
 app.use( compression() );
@@ -50,10 +42,6 @@ app.use( cors() );
 app.use( morgan( 'common' ) );
 app.use( express.json() );
 app.use( express.urlencoded( { extended: true } ) );
-app.use( normalizeResponse );
-
-// Initialize cron service
-new CronService();
 
 // Rate limiting
 app.use( rateLimit( {
@@ -61,62 +49,30 @@ app.use( rateLimit( {
   max: 100 // limit each IP to 100 requests per windowMs
 } ) );
 
-// SMS validation schema
-const smsSchema = z.object( {
-  body: z.object( {
-    to: z.string().regex( /^\+[1-9]\d{1,14}$/ ),
-    message: z.string().min( 1 ).max( 160 )
-  } )
-} );
-
-// Example SMS route with both middlewares
-app.post(
-  '/api/sms',
-  smsRateLimiter,
-  createRequestValidator( { body: smsSchema.shape.body } ),
-  // Your route handler here
-);
-
-// Swagger documentation
-app.use( '/api-docs', swaggerUi.serve, swaggerUi.setup( specs ) );
-
 // Routes
-app.use( '/api/v1/users', userRoutes );
-app.use( '/api/v1/borrowers', borrowerRoutes );
-app.use( '/api/v1/loan-officers', loanOfficerRoutes );
-app.use( '/api/v1/auth', authRoutes );
-app.use( '/api/v1/comments', commentRoutes );
-app.use( '/api/v1/fees', feeRoutes );
-app.use( '/api/v1/loans', loanRoutes );
-app.use( '/api/v1/collaterals', collateralRoutes );
-app.use( '/api/v1/borrower-groups', borrowerGroupRoutes );
-app.use( '/api/v1/payments', paymentRoutes );
-app.use( '/api/v1/activity-logs', activityLogRoutes );
-app.use( '/api/v1/branches', branchRoutes );
-app.use( '/api/v1/documents', documentRoutes );
+app.use( '/api/admin', adminRoutes );
+app.use( '/api/posts', postRoutes );
+app.use( '/api/contact', contactRoutes );
 
-// Error handling
+app.use( '/api/coaches', coachRoutes );
+app.use( '/api/gallery', galleryRoutes );
+app.use( '/api/facilities', facilityRoutes );
+app.use( '/api/programs', programRoutes );
+app.use( '/api/registrations', registrationRoutes );
+
+
+// Error Handler
 app.use( errorHandler );
 
-// Database connection and server startup
 const startServer = async () => {
   try {
     await AppDataSource.initialize();
-    Logger.info( 'Database connected successfully' );
+    Logger.info( 'Database connection established' );
 
     const port = env.PORT || 5000;
-    const server = app.listen( port, () => {
-      Logger.info( `Server is running on port ${port}` );
+    app.listen( port, () => {
+      Logger.info( `Server running on port ${port}` );
     } );
-
-    // Graceful shutdown
-    process.on( 'SIGTERM', () => {
-      server.close( () => {
-        Logger.info( 'Server closed' );
-        process.exit( 0 );
-      } );
-    } );
-
   } catch ( error ) {
     Logger.error( 'Error starting server:', error );
     process.exit( 1 );

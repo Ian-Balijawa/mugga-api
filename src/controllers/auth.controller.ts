@@ -1,69 +1,36 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
+import { loginSchema, signupSchema } from '../validators/auth.validator';
 
 export class AuthController {
-  private authService = new AuthService();
+    private authService: AuthService;
 
-  async forgotPassword( req: Request, res: Response ): Promise<void> {
-    const { email } = req.body;
-    const securityCode = await this.authService.initiatePasswordReset( email );
-    res.json( { message: 'Password reset initiated', securityCode } );
-  }
+    constructor() {
+        this.authService = new AuthService();
+    }
 
-  async verifyEmail( req: Request, res: Response ): Promise<void> {
-    const { email, otp } = req.body;
-    await this.authService.verifyEmail( email, otp );
-    res.status( 200 ).json( { message: 'Email verified successfully' } );
-  }
+    async login( req: Request, res: Response ): Promise<void> {
+        const { email, password } = await loginSchema.parseAsync( req.body );
+        const token = await this.authService.login( email, password );
+        res.json( { success: true, data: { token } } );
+    }
 
-  async verifyPhone( req: Request, res: Response ): Promise<void> {
-    const { phone, otp } = req.body;
-    await this.authService.verifyPhone( req.user!.userId, phone, otp );
-    res.status( 200 ).json( { message: 'Phone verified successfully' } );
-  }
+    async logout( req: Request, res: Response ): Promise<void> {
+        await this.authService.logout( req.user!.userId );
+        res.status( 204 ).send();
+    }
 
-  async changePassword( req: Request, res: Response ): Promise<void> {
-    const { currentPassword, newPassword } = req.body;
-    await this.authService.changePassword( req.user!.userId, currentPassword, newPassword );
-    res.status( 200 ).json( { message: 'Password changed successfully' } );
-  }
+    async getCurrentUser( req: Request, res: Response ): Promise<void> {
+        const user = await this.authService.findById( req.user!.userId );
+        res.json( { success: true, data: user } );
+    }
 
-  async verifySecurityCode( req: Request, res: Response ): Promise<void> {
-    const { email, code } = req.body;
-    await this.authService.verifySecurityCode( email, code );
-    res.status( 200 ).json( { message: 'Security code verified successfully' } );
-  }
-
-  async resetPassword( req: Request, res: Response ): Promise<void> {
-    const { email, newPassword, otp } = req.body;
-    await this.authService.resetPassword( email, newPassword, otp );
-    res.status( 200 ).json( { message: 'Password reset successfully' } );
-  }
-
-  async signup( req: Request, res: Response ): Promise<void> {
-    const { firstName, lastName, email, phone, password, employeeId, isAdmin = false } = req.body;
-    const loanOfficer = await this.authService.createLoanOfficer( {
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      employeeId,
-      isAdmin,
-      isActive: isAdmin // Admin accounts are active by default
-    } );
-    res.status( 201 ).json( loanOfficer );
-  }
-
-  async signin( req: Request, res: Response ): Promise<void> {
-    const { email, password } = req.body;
-    const { token, user } = await this.authService.signin( email, password );
-    res.status( 200 ).json( { token, user } );
-  }
-
-  async toggleActivation( req: Request, res: Response ): Promise<void> {
-    const { loanOfficerId, isActive } = req.body;
-    await this.authService.toggleLoanOfficerActivation( loanOfficerId, isActive );
-    res.status( 200 ).json( { message: 'Activation status updated successfully' } );
-  }
+    async signup( req: Request, res: Response ): Promise<void> {
+        const data = await signupSchema.parseAsync( req.body );
+        const user = await this.authService.createAdmin( data );
+        res.status( 201 ).json( {
+            success: true,
+            data: user
+        } );
+    }
 }
