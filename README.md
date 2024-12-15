@@ -1,49 +1,54 @@
-# Loan Management System
+# Arena Sports Academy CMS
 
-A robust and scalable loan management system built with TypeScript, Express, and TypeORM. This system provides comprehensive features for managing loans, borrowers, loan officers, and branch operations.
+A comprehensive Content Management System for Arena Sports Academy built with TypeScript, Express, and TypeORM. This system manages programs, coaches, facilities, registrations, and content.
 
 ## Features
 
-- **User Management**
-  - Role-based access control (Admin, Loan Officer, User)
-  - Email and phone verification
-  - Secure authentication with JWT
+- **Program Management**
+  - Multiple program categories (training, camps, clinics)
+  - Program scheduling and capacity control
+  - Registration tracking
+  - Pricing management
 
-- **Loan Management**
-  - Multiple loan types support
-  - Flexible interest calculation methods
-  - Collateral management
-  - Payment tracking
-  - Fee management
-  - Document management
+- **Coach Management**
+  - Coach profiles and specialties
+  - Image management
+  - Expertise categorization
+  - Schedule management
 
-- **Branch Operations**
-  - Multi-branch support
-  - Branch-specific loan configurations
-  - Loan officer assignment
-  - Branch-wise reporting
+- **Facility Management**
+  - Facility details and features
+  - Equipment inventory
+  - Image gallery
+  - Availability tracking
 
-- **Group Lending**
-  - Borrower group management
-  - Group loan tracking
-  - Meeting schedule management
+- **Registration System**
+  - Online program registration
+  - Emergency contact information
+  - Medical information handling
+  - Registration confirmation emails
+  - Capacity management
 
-- **Security & Monitoring**
-  - Rate limiting
+- **Content Management**
+  - News and announcements
+  - Image gallery management
+  - Program updates
+  - Facility information
+
+- **Security & Administration**
+  - Role-based access control (Admin)
   - Activity logging
-  - Error tracking
-  - Request validation
-  - API documentation with Swagger
+  - File upload management
+  - Secure authentication with JWT
 
 ## Tech Stack
 
 - Node.js & TypeScript
 - Express.js
 - TypeORM with MySQL
-- Redis for caching and rate limiting
-- Winston for logging
-- Twilio for SMS notifications
+- Multer for file uploads
 - Nodemailer for email communications
+- Zod for validation
 - Swagger for API documentation
 - Jest for testing
 
@@ -51,7 +56,6 @@ A robust and scalable loan management system built with TypeScript, Express, and
 
 - Node.js (v14 or higher)
 - MySQL (v8.0 or higher)
-- Redis
 - npm or yarn
 
 ## Installation
@@ -59,8 +63,8 @@ A robust and scalable loan management system built with TypeScript, Express, and
 1. Clone the repository:
 
 ```bash
-git clone git@github.com:Ian-Balijawa/loan-management.git
-cd loan-management
+git clone [repository-url]
+cd arena-sports-academy
 ```
 
 2. Install dependencies:
@@ -75,14 +79,67 @@ npm install
 cp .env.example .env
 ```
 
+Edit the .env file with your configuration:
+
+```env
+PORT=5000
+NODE_ENV=development
+
+# Database
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=your_user
+DB_PASS=your_password
+DB_NAME=arena_sports
+
+# JWT
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=24h
+
+# Email
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your_email
+SMTP_PASS=your_password
+MAIL_FROM=noreply@arenasports.com
+```
+
 4. Start the server:
 
 ```bash
-npm run start
+# Development
+npm run dev
+
+# Production
+npm run build
+npm start
 ```
 
 5. Access the API documentation:
 
-```bash
+```
 http://localhost:5000/api-docs
 ```
+
+## API Documentation
+
+The API is documented using Swagger. Major endpoints include:
+
+- `/api/programs` - Program management
+- `/api/coaches` - Coach profiles
+- `/api/facilities` - Facility management
+- `/api/gallery` - Image gallery
+- `/api/registrations` - Registration handling
+- `/api/admin` - Administrative functions
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details
