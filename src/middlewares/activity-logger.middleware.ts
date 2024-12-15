@@ -11,11 +11,14 @@ export function logActivity( entityType: string ) {
     return async ( req: Request, res: Response, next: NextFunction ) => {
         const originalJson = res.json;
         res.json = function ( body: any ) {
-            const userContext = req.user!;
-
-            // Handle activity logging asynchronously without blocking response
+            const userContext = req.user;
+            
             ( async () => {
-                const user = await userService.findById( userContext.userId );
+                let user = null;
+                if (userContext) {
+                    user = await userService.findById( userContext.userId );
+                }
+
                 const method = req.method;
                 let type: ActivityType;
                 let description: string;
@@ -25,14 +28,14 @@ export function logActivity( entityType: string ) {
                     case 'POST':
                         type = ActivityType.CREATE;
                         description = `Created new ${entityType}`;
-                        entityId = body.id;
+                        entityId = body.data?.id;
                         await activityLogService.logEntityChange(
                             type,
                             entityType,
                             entityId!,
                             description,
                             null,
-                            body,
+                            body.data,
                             user,
                             req
                         );
@@ -49,7 +52,7 @@ export function logActivity( entityType: string ) {
                             entityId,
                             description,
                             req.body,
-                            body,
+                            body.data,
                             user,
                             req
                         );

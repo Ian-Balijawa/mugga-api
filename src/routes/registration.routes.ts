@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { authenticate, authorize } from '../middlewares/auth.middleware';
 import { RegistrationController } from '../controllers/registration.controller';
+import { authenticate, authorize } from '../middlewares/auth.middleware';
+import { logActivity } from '../middlewares/activity-logger.middleware';
 
 const router = Router();
 const registrationController = new RegistrationController();
@@ -104,7 +105,10 @@ const registrationController = new RegistrationController();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post( '/', registrationController.create.bind( registrationController ) );
+router.post( '/',
+    logActivity( 'registration' ),
+    registrationController.create.bind( registrationController )
+);
 
 // Protected routes
 router.use( authenticate );
@@ -154,14 +158,30 @@ router.use( authorize( 'admin' ) );
  *       403:
  *         description: Forbidden - Requires admin role
  */
-router.get( '/', registrationController.findAll.bind( registrationController ) );
+router.get( '/',
+    registrationController.findAll.bind( registrationController )
+);
 
-router.get( '/:id', registrationController.findById.bind( registrationController ) );
-router.get( '/program/:programId', registrationController.findByProgram.bind( registrationController ) );
+router.get( '/:id',
+    registrationController.findById.bind( registrationController )
+);
 
-router.put( '/:id', registrationController.update.bind( registrationController ) );
-router.delete( '/:id', registrationController.delete.bind( registrationController ) );
+router.get( '/program/:programId',
+    registrationController.findByProgram.bind( registrationController )
+);
 
-router.get( '/program/:programId/availability', registrationController.checkAvailability.bind( registrationController ) );
+router.put( '/:id',
+    logActivity( 'registration' ),
+    registrationController.update.bind( registrationController )
+);
+
+router.delete( '/:id',
+    logActivity( 'registration' ),
+    registrationController.delete.bind( registrationController )
+);
+
+router.get( '/program/:programId/availability',
+    registrationController.checkAvailability.bind( registrationController )
+);
 
 export { router as registrationRoutes };

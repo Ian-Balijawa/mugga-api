@@ -19,6 +19,7 @@ import { galleryRoutes } from './routes/gallery.routes';
 import { facilityRoutes } from './routes/facility.routes';
 import { programRoutes } from './routes/program.routes';
 import { registrationRoutes } from './routes/registration.routes';
+import { statsRoutes } from './routes/stats.routes';
 
 // Global error handlers
 process.on( 'uncaughtException', ( error: Error ) => {
@@ -38,27 +39,38 @@ setupSwagger( app );
 // Middleware
 app.use( helmet() );
 app.use( compression() );
-app.use( cors() );
+app.use( cors( {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Range', 'X-Total-Count'],
+} ) );
 app.use( morgan( 'common' ) );
 app.use( express.json() );
 app.use( express.urlencoded( { extended: true } ) );
+app.use( express.static( 'public' ) );
+app.use( '/uploads', ( _req, res, next ) => {
+  res.setHeader( 'cross-origin-resource-policy', 'cross-origin' );
+  next();
+} );
 
-// Rate limiting
+
 app.use( rateLimit( {
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // limit each IP to 100 requests per windowMs
 } ) );
 
 // Routes
-app.use( '/api/admin', adminRoutes );
-app.use( '/api/posts', postRoutes );
-app.use( '/api/contact', contactRoutes );
+app.use( '/api/v1/admin', adminRoutes );
+app.use( '/api/v1/posts', postRoutes );
+app.use( '/api/v1/contact', contactRoutes );
 
-app.use( '/api/coaches', coachRoutes );
-app.use( '/api/gallery', galleryRoutes );
-app.use( '/api/facilities', facilityRoutes );
-app.use( '/api/programs', programRoutes );
-app.use( '/api/registrations', registrationRoutes );
+app.use( '/api/v1/coaches', coachRoutes );
+app.use( '/api/v1/gallery', galleryRoutes );
+app.use( '/api/v1/facilities', facilityRoutes );
+app.use( '/api/v1/programs', programRoutes );
+app.use( '/api/v1/registrations', registrationRoutes );
+app.use( '/api/v1/stats', statsRoutes );
 
 
 // Error Handler

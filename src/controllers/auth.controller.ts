@@ -11,8 +11,8 @@ export class AuthController {
 
     async login( req: Request, res: Response ): Promise<void> {
         const { email, password } = await loginSchema.parseAsync( req.body );
-        const token = await this.authService.login( email, password );
-        res.json( { success: true, data: { token } } );
+        const { token, user } = await this.authService.login( email, password );
+        res.json( { success: true, data: { token, user } } );
     }
 
     async logout( req: Request, res: Response ): Promise<void> {

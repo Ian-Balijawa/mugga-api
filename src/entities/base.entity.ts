@@ -11,13 +11,16 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
     updatedAt: Date;
 
     @DeleteDateColumn()
-    deletedAt?: Date;
+    deletedAt: Date | null;
 
     @Column( { nullable: true } )
     createdBy?: string;
 
     @Column( { nullable: true } )
     updatedBy?: string;
+
+    @Column( { nullable: true } )
+    deletedBy?: string;
 
     @VersionColumn()
     version: number;

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { BaseService } from '../services/base.service';
 import { FileStorageService } from '../services/file-storage.service';
-import { ObjectLiteral } from 'typeorm';
+import { BaseEntity } from '../entities/base.entity';
 
-export abstract class BaseController<T extends ObjectLiteral> {
+export abstract class BaseController<T extends BaseEntity> {
     constructor(
         protected service: BaseService<T>,
         protected fileStorage?: FileStorageService
@@ -42,7 +42,17 @@ export abstract class BaseController<T extends ObjectLiteral> {
     }
 
     async delete( req: Request, res: Response ): Promise<void> {
-        await this.service.delete( req.params.id );
+        const userId = ( req as any ).user?.id; // Get user from auth middleware
+        await this.service.delete( req.params.id, userId );
         res.status( 204 ).send();
+    }
+
+    // Optional: Add restore endpoint
+    async restore( req: Request, res: Response ): Promise<void> {
+        const entity = await this.service.restore( req.params.id );
+        res.json( {
+            success: true,
+            data: entity
+        } );
     }
 }

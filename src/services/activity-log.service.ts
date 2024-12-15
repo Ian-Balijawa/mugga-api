@@ -13,7 +13,7 @@ interface LogActivityParams {
     oldValues?: Record<string, any>;
     newValues?: Record<string, any>;
     metadata?: Record<string, any>;
-    user: User;
+    user?: User;
     req?: Request;
 }
 
@@ -37,10 +37,10 @@ interface FetchLogsResponse {
 
 export class ActivityLogService extends BaseService<ActivityLog> {
     constructor() {
-        super(AppDataSource.getRepository(ActivityLog));
+        super( AppDataSource.getRepository( ActivityLog ) );
     }
 
-    async logActivity({
+    async logActivity( {
         type,
         description,
         entityType,
@@ -50,8 +50,8 @@ export class ActivityLogService extends BaseService<ActivityLog> {
         metadata,
         user,
         req
-    }: LogActivityParams): Promise<ActivityLog> {
-        const activityLog = await this.create({
+    }: LogActivityParams ): Promise<ActivityLog> {
+        const activityLog = await this.create( {
             type,
             description,
             entityType,
@@ -62,31 +62,31 @@ export class ActivityLogService extends BaseService<ActivityLog> {
             user,
             ipAddress: req?.ip,
             userAgent: req?.headers['user-agent']
-        });
+        } );
 
         return activityLog;
     }
 
     async logEntityChange(
-        type: ActivityType.CREATE | ActivityType.UPDATE | ActivityType.DELETE,
+        type: ActivityType,
         entityType: string,
         entityId: string,
         description: string,
         oldValues: Record<string, any> | null,
         newValues: Record<string, any> | null,
-        user: User,
+        user: User | null,
         req?: Request
     ): Promise<ActivityLog> {
-        return this.logActivity({
+        return this.logActivity( {
             type,
             description,
             entityType,
             entityId,
             oldValues: oldValues || undefined,
             newValues: newValues || undefined,
-            user,
+            user: user || undefined,
             req
-        });
+        } );
     }
 
     async logUserAction(
@@ -96,7 +96,7 @@ export class ActivityLogService extends BaseService<ActivityLog> {
         metadata?: Record<string, any>,
         req?: Request
     ): Promise<ActivityLog> {
-        return this.logActivity({
+        return this.logActivity( {
             type,
             description,
             entityType: 'user',
@@ -104,25 +104,25 @@ export class ActivityLogService extends BaseService<ActivityLog> {
             metadata,
             user,
             req
-        });
+        } );
     }
 
-    async findByEntity(entityType: string, entityId: string): Promise<ActivityLog[]> {
-        return this.repository.find({
+    async findByEntity( entityType: string, entityId: string ): Promise<ActivityLog[]> {
+        return this.repository.find( {
             where: { entityType, entityId },
             relations: ['user'],
             order: { createdAt: 'DESC' }
-        });
+        } );
     }
 
-    async findByUser(userId: string): Promise<ActivityLog[]> {
-        return this.repository.find({
+    async findByUser( userId: string ): Promise<ActivityLog[]> {
+        return this.repository.find( {
             where: { user: { id: userId } },
             order: { createdAt: 'DESC' }
-        });
+        } );
     }
 
-    async fetchLogs({
+    async fetchLogs( {
         page = 1,
         limit = 10,
         startDate,
@@ -131,63 +131,63 @@ export class ActivityLogService extends BaseService<ActivityLog> {
         entityType,
         entityId,
         userId
-    }: FetchLogsParams): Promise<FetchLogsResponse> {
+    }: FetchLogsParams ): Promise<FetchLogsResponse> {
         const where: FindOptionsWhere<ActivityLog> = {};
 
-        if (startDate && endDate) {
-            where.createdAt = Between(startDate, endDate);
+        if ( startDate && endDate ) {
+            where.createdAt = Between( startDate, endDate );
         }
-        if (type) {
+        if ( type ) {
             where.type = type;
         }
-        if (entityType) {
+        if ( entityType ) {
             where.entityType = entityType;
         }
-        if (entityId) {
+        if ( entityId ) {
             where.entityId = entityId;
         }
-        if (userId) {
+        if ( userId ) {
             where.user = { id: userId };
         }
 
-        const [logs, total] = await this.repository.findAndCount({
+        const [logs, total] = await this.repository.findAndCount( {
             where,
             relations: ['user'],
             order: { createdAt: 'DESC' },
-            skip: (page - 1) * limit,
+            skip: ( page - 1 ) * limit,
             take: limit
-        });
+        } );
 
         return {
             logs,
             total,
             page,
-            totalPages: Math.ceil(total / limit)
+            totalPages: Math.ceil( total / limit )
         };
     }
 
-    async getRecentLogs(limit: number = 10): Promise<ActivityLog[]> {
-        return this.repository.find({
+    async getRecentLogs( limit: number = 10 ): Promise<ActivityLog[]> {
+        return this.repository.find( {
             relations: ['user'],
             order: { createdAt: 'DESC' },
             take: limit
-        });
+        } );
     }
 
-    async getEntityHistory(entityType: string, entityId: string): Promise<ActivityLog[]> {
-        return this.repository.find({
+    async getEntityHistory( entityType: string, entityId: string ): Promise<ActivityLog[]> {
+        return this.repository.find( {
             where: { entityType, entityId },
             relations: ['user'],
             order: { createdAt: 'DESC' }
-        });
+        } );
     }
 
-    async getUserActivity(userId: string, limit: number = 10): Promise<ActivityLog[]> {
-        return this.repository.find({
+    async getUserActivity( userId: string, limit: number = 10 ): Promise<ActivityLog[]> {
+        return this.repository.find( {
             where: { user: { id: userId } },
             relations: ['user'],
             order: { createdAt: 'DESC' },
             take: limit
-        });
+        } );
     }
 }

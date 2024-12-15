@@ -9,12 +9,13 @@ import { hashPassword, comparePasswords } from '../utils/password.utils';
 export class AuthService {
     private userRepository = AppDataSource.getRepository( User );
 
-    async login( email: string, password: string ): Promise<string> {
+    async login( email: string, password: string ): Promise<{ token: string, user: User }> {
         const user = await this.userRepository.findOne( { where: { email } } );
         if ( !user || !await comparePasswords( password, user.password ) ) {
             throw new AppError( 401, 'Invalid credentials' );
         }
-        return this.generateToken( user );
+        const token = this.generateToken( user );
+        return { token, user }
     }
 
     async logout( _userId: string ): Promise<void> {
