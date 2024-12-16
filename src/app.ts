@@ -61,17 +61,19 @@ app.use( rateLimit( {
   max: 100 // limit each IP to 100 requests per windowMs
 } ) );
 
-// Routes
-app.use( '/api/v1/admin', logActivity( 'admin' ), adminRoutes );
-app.use( '/api/v1/posts', logActivity( 'post' ), postRoutes );
-app.use( '/api/v1/contact', logActivity( 'contact' ), contactRoutes );
+const API_VERSION = 'v1';
 
-app.use( '/api/v1/coaches', logActivity( 'coach' ), coachRoutes );
-app.use( '/api/v1/gallery', logActivity( 'gallery' ), galleryRoutes );
-app.use( '/api/v1/facilities', logActivity( 'facility' ), facilityRoutes );
-app.use( '/api/v1/programs', logActivity( 'program' ), programRoutes );
-app.use( '/api/v1/registration', logActivity( 'registration' ), registrationRoutes );
-app.use( '/api/v1/stats', logActivity( 'stats' ), statsRoutes );
+// Routes
+app.use( `/api/${API_VERSION}/admin`, logActivity( 'admin' ), adminRoutes );
+app.use( `/api/${API_VERSION}/posts`, logActivity( 'post' ), postRoutes );
+app.use( `/api/${API_VERSION}/contact`, logActivity( 'contact' ), contactRoutes );
+
+app.use( `/api/${API_VERSION}/coaches`, logActivity( 'coach' ), coachRoutes );
+app.use( `/api/${API_VERSION}/gallery`, logActivity( 'gallery' ), galleryRoutes );
+app.use( `/api/${API_VERSION}/facilities`, logActivity( 'facility' ), facilityRoutes );
+app.use( `/api/${API_VERSION}/programs`, logActivity( 'program' ), programRoutes );
+app.use( `/api/${API_VERSION}/registration`, logActivity( 'registration' ), registrationRoutes );
+app.use( `/api/${API_VERSION}/stats`, logActivity( 'stats' ), statsRoutes );
 
 
 // Error Handler

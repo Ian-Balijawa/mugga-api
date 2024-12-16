@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { RegistrationController } from '../controllers/registration.controller';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
-import { logActivity } from '../middlewares/activity-logger.middleware';
 
 const router = Router();
 const registrationController = new RegistrationController();
@@ -106,7 +105,6 @@ const registrationController = new RegistrationController();
  *               $ref: '#/components/schemas/Error'
  */
 router.post( '/',
-    logActivity( 'registration' ),
     registrationController.create.bind( registrationController )
 );
 
@@ -171,12 +169,10 @@ router.get( '/program/:programId',
 );
 
 router.put( '/:id',
-    logActivity( 'registration' ),
     registrationController.update.bind( registrationController )
 );
 
 router.delete( '/:id',
-    logActivity( 'registration' ),
     registrationController.delete.bind( registrationController )
 );
 
