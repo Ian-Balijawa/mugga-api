@@ -1,8 +1,8 @@
 import { BaseEntity as TypeOrmBaseEntity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, VersionColumn, Column } from 'typeorm';
 
 export abstract class BaseEntity extends TypeOrmBaseEntity {
-    @PrimaryGeneratedColumn( 'uuid' )
-    id: string;
+    @PrimaryGeneratedColumn( 'increment' )
+    id: number;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -13,14 +13,14 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @Column( { nullable: true } )
-    createdBy?: string;
+    @Column( { type: 'int', nullable: true } )
+    createdBy?: number;
 
-    @Column( { nullable: true } )
-    updatedBy?: string;
+    @Column( { type: 'int', nullable: true } )
+    updatedBy?: number;
 
-    @Column( { nullable: true } )
-    deletedBy?: string;
+    @Column( { type: 'int', nullable: true } )
+    deletedBy?: number;
 
     @VersionColumn()
     version: number;

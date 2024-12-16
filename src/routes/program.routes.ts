@@ -56,7 +56,7 @@ const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
- * /api/programs:
+ * /api/v1/programs:
  *   get:
  *     summary: Get all programs
  *     tags: [Programs]
@@ -92,7 +92,7 @@ router.get( '/', programController.findAll.bind( programController ) );
 
 /**
  * @swagger
- * /api/programs/{id}:
+ * /api/v1/programs/{id}:
  *   get:
  *     summary: Get program by ID
  *     tags: [Programs]
@@ -124,7 +124,7 @@ router.get( '/:id', programController.findById.bind( programController ) );
 
 /**
  * @swagger
- * /api/programs/category/{category}:
+ * /api/v1/programs/category/{category}:
  *   get:
  *     summary: Get programs by category
  *     tags: [Programs]
@@ -160,7 +160,7 @@ router.use( authorize( 'admin' ) );
 
 /**
  * @swagger
- * /api/programs:
+ * /api/v1/programs:
  *   post:
  *     summary: Create a new program
  *     tags: [Programs]

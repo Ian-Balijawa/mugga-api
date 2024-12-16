@@ -26,7 +26,7 @@ export abstract class BaseController<T extends BaseEntity> {
     }
 
     async findById( req: Request, res: Response ): Promise<void> {
-        const entity = await this.service.findById( req.params.id );
+        const entity = await this.service.findById( +req.params.id );
         res.json( {
             success: true,
             data: entity
@@ -34,7 +34,7 @@ export abstract class BaseController<T extends BaseEntity> {
     }
 
     async update( req: Request, res: Response ): Promise<void> {
-        const entity = await this.service.update( req.params.id, req.body );
+        const entity = await this.service.update( +req.params.id, req.body );
         res.json( {
             success: true,
             data: entity
@@ -43,13 +43,13 @@ export abstract class BaseController<T extends BaseEntity> {
 
     async delete( req: Request, res: Response ): Promise<void> {
         const userId = ( req as any ).user?.id; // Get user from auth middleware
-        await this.service.delete( req.params.id, userId );
+        await this.service.delete( +req.params.id, userId );
         res.status( 204 ).send();
     }
 
     // Optional: Add restore endpoint
     async restore( req: Request, res: Response ): Promise<void> {
-        const entity = await this.service.restore( req.params.id );
+        const entity = await this.service.restore( +req.params.id );
         res.json( {
             success: true,
             data: entity

@@ -34,7 +34,7 @@ const contactController = new ContactController();
 
 /**
  * @swagger
- * /api/contact:
+ * /api/v1/contact:
  *   post:
  *     summary: Submit contact form
  *     tags: [Contact]

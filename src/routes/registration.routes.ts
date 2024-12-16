@@ -75,7 +75,7 @@ const registrationController = new RegistrationController();
 
 /**
  * @swagger
- * /api/registrations:
+ * /api/v1/registrations:
  *   post:
  *     summary: Create a new program registration
  *     tags: [Registrations]
@@ -116,7 +116,7 @@ router.use( authorize( 'admin' ) );
 
 /**
  * @swagger
- * /api/registrations:
+ * /api/v1/registrations:
  *   get:
  *     summary: Get all registrations
  *     tags: [Registrations]

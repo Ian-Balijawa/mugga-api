@@ -37,7 +37,7 @@ const statsController = new StatsController();
 
 /**
  * @swagger
- * /api/v1/stats:
+ * /api/v1/v1/stats:
  *   get:
  *     summary: Get system statistics and recent activities
  *     tags: [Stats]

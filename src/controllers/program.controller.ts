@@ -32,7 +32,7 @@ export class ProgramController extends BaseController<Program> {
 
     async update( req: Request, res: Response ): Promise<void> {
         const data = await programSchema.partial().parseAsync( req.body );
-        const existingProgram = await this.service.findById( req.params.id );
+        const existingProgram = await this.service.findById( +req.params.id );
 
         if ( req.file ) {
             if ( existingProgram.imageUrl ) {
@@ -42,7 +42,7 @@ export class ProgramController extends BaseController<Program> {
             data.imageUrl = imageUrl;
         }
 
-        const program = await this.service.update( req.params.id, data );
+        const program = await this.service.update( +req.params.id, data );
         res.json( {
             success: true,
             data: program

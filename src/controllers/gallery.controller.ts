@@ -32,7 +32,7 @@ export class GalleryController extends BaseController<GalleryItem> {
 
     async update( req: Request, res: Response ): Promise<void> {
         const data = await galleryItemSchema.partial().parseAsync( req.body );
-        const existingItem = await this.service.findById( req.params.id );
+        const existingItem = await this.service.findById( +req.params.id );
 
         if ( req.file ) {
             if ( existingItem.imageUrl ) {
@@ -42,7 +42,7 @@ export class GalleryController extends BaseController<GalleryItem> {
             data.imageUrl = imageUrl;
         }
 
-        const item = await this.service.update( req.params.id, data );
+        const item = await this.service.update( +req.params.id, data );
         res.json( {
             success: true,
             data: item

@@ -41,7 +41,7 @@ const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
- * /api/gallery:
+ * /api/v1/gallery:
  *   get:
  *     summary: Get all gallery items
  *     tags: [Gallery]
@@ -72,7 +72,7 @@ router.get( '/', galleryController.findAll.bind( galleryController ) );
 
 /**
  * @swagger
- * /api/gallery/{id}:
+ * /api/v1/gallery/{id}:
  *   get:
  *     summary: Get gallery item by ID
  *     tags: [Gallery]
@@ -104,7 +104,7 @@ router.get( '/:id', galleryController.findById.bind( galleryController ) );
 
 /**
  * @swagger
- * /api/gallery/category/{category}:
+ * /api/v1/gallery/category/{category}:
  *   get:
  *     summary: Get gallery items by category
  *     tags: [Gallery]
@@ -140,7 +140,7 @@ router.use( authorize( 'admin' ) );
 
 /**
  * @swagger
- * /api/gallery:
+ * /api/v1/gallery:
  *   post:
  *     summary: Create a new gallery item
  *     tags: [Gallery]
@@ -194,7 +194,7 @@ router.post( '/',
 
 /**
  * @swagger
- * /api/gallery/{id}:
+ * /api/v1/gallery/{id}:
  *   put:
  *     summary: Update a gallery item
  *     tags: [Gallery]
@@ -246,7 +246,7 @@ router.put( '/:id',
 
 /**
  * @swagger
- * /api/gallery/{id}:
+ * /api/v1/gallery/{id}:
  *   delete:
  *     summary: Delete a gallery item
  *     tags: [Gallery]

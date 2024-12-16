@@ -49,7 +49,7 @@ const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
- * /api/coaches:
+ * /api/v1/coaches:
  *   get:
  *     summary: Get all coaches
  *     tags: [Coaches]
@@ -73,7 +73,7 @@ router.get( '/', coachController.findAll.bind( coachController ) );
 
 /**
  * @swagger
- * /api/coaches/{id}:
+ * /api/v1/coaches/{id}:
  *   get:
  *     summary: Get coach by ID
  *     tags: [Coaches]
@@ -109,7 +109,7 @@ router.use( authorize( 'admin' ) );
 
 /**
  * @swagger
- * /api/coaches:
+ * /api/v1/coaches:
  *   post:
  *     summary: Create a new coach profile
  *     tags: [Coaches]
@@ -163,7 +163,7 @@ router.post( '/',
 
 /**
  * @swagger
- * /api/coaches/{id}:
+ * /api/v1/coaches/{id}:
  *   put:
  *     summary: Update a coach profile
  *     tags: [Coaches]
@@ -224,7 +224,7 @@ router.put( '/:id',
 
 /**
  * @swagger
- * /api/coaches/{id}:
+ * /api/v1/coaches/{id}:
  *   delete:
  *     summary: Delete a coach profile
  *     tags: [Coaches]

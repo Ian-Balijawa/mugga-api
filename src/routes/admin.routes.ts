@@ -73,7 +73,7 @@ const authController = new AuthController();
 
 /**
  * @swagger
- * /api/admin/login:
+ * /api/v1/v1/admin/login:
  *   post:
  *     summary: Admin login
  *     tags: [Admin]
@@ -101,7 +101,7 @@ router.post( '/login',
 
 /**
  * @swagger
- * /api/admin/logout:
+ * /api/v1/v1/admin/logout:
  *   post:
  *     summary: Admin logout
  *     tags: [Admin]
@@ -120,7 +120,7 @@ router.post( '/logout',
 
 /**
  * @swagger
- * /api/admin/me:
+ * /api/v1/v1/admin/me:
  *   get:
  *     summary: Get current admin profile
  *     tags: [Admin]
@@ -149,7 +149,7 @@ router.get( '/me',
 
 /**
  * @swagger
- * /api/admin/signup:
+ * /api/v1/v1/admin/signup:
  *   post:
  *     summary: Create new admin account
  *     tags: [Admin]

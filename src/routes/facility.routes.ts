@@ -47,7 +47,7 @@ const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
- * /api/facilities:
+ * /api/v1/facilities:
  *   get:
  *     summary: Get all facilities
  *     tags: [Facilities]
@@ -71,7 +71,7 @@ router.get( '/', facilityController.findAll.bind( facilityController ) );
 
 /**
  * @swagger
- * /api/facilities/{id}:
+ * /api/v1/facilities/{id}:
  *   get:
  *     summary: Get facility by ID
  *     tags: [Facilities]
@@ -107,7 +107,7 @@ router.use( authorize( 'admin' ) );
 
 /**
  * @swagger
- * /api/facilities:
+ * /api/v1/facilities:
  *   post:
  *     summary: Create a new facility
  *     tags: [Facilities]
@@ -166,7 +166,7 @@ router.post( '/',
 
 /**
  * @swagger
- * /api/facilities/{id}:
+ * /api/v1/facilities/{id}:
  *   put:
  *     summary: Update a facility
  *     tags: [Facilities]
@@ -222,7 +222,7 @@ router.put( '/:id',
 
 /**
  * @swagger
- * /api/facilities/{id}:
+ * /api/v1/facilities/{id}:
  *   delete:
  *     summary: Delete a facility
  *     tags: [Facilities]

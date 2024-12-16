@@ -15,12 +15,12 @@ export enum ActivityType {
     OTHER = 'other'
 }
 
-@Entity('activity_logs')
+@Entity( 'activity_logs' )
 export class ActivityLog extends BaseEntity {
-    @Column({
+    @Column( {
         type: 'enum',
         enum: ActivityType
-    })
+    } )
     type: ActivityType;
 
     @Column()
@@ -29,25 +29,25 @@ export class ActivityLog extends BaseEntity {
     @Column()
     entityType: string;
 
-    @Column({ nullable: true })
-    entityId?: string;
+    @Column( { nullable: true } )
+    entityId?: number;
 
-    @Column({ type: 'json', nullable: true })
+    @Column( { type: 'json', nullable: true } )
     oldValues?: Record<string, any>;
 
-    @Column({ type: 'json', nullable: true })
+    @Column( { type: 'json', nullable: true } )
     newValues?: Record<string, any>;
 
-    @Column({ type: 'json', nullable: true })
+    @Column( { type: 'json', nullable: true } )
     metadata?: Record<string, any>;
 
-    @Column({ nullable: true })
+    @Column( { nullable: true } )
     ipAddress?: string;
 
-    @Column({ nullable: true })
+    @Column( { nullable: true } )
     userAgent?: string;
 
     @Index()
-    @ManyToOne(() => User)
+    @ManyToOne( () => User )
     user: User;
 }

@@ -30,7 +30,7 @@ export class RegistrationController extends BaseController<Registration> {
     }
 
     async findByProgram( req: Request, res: Response ): Promise<void> {
-        const registrations = await this.registrationService.findByProgram( req.params.programId );
+        const registrations = await this.registrationService.findByProgram( +req.params.programId );
         res.json( {
             success: true,
             data: registrations
@@ -39,7 +39,7 @@ export class RegistrationController extends BaseController<Registration> {
 
     async checkAvailability( req: Request, res: Response ): Promise<void> {
         const { programId } = req.params;
-        const isAvailable = await this.registrationService.checkProgramAvailability( programId );
+        const isAvailable = await this.registrationService.checkProgramAvailability( +programId );
         res.json( {
             success: true,
             data: { isAvailable }

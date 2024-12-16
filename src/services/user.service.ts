@@ -8,7 +8,7 @@ export class UserService extends BaseService<User> {
         super( AppDataSource.getRepository( User ) );
     }
 
-    async findById( userId: string ): Promise<User> {
+    async findById( userId: number ): Promise<User> {
         const user = await this.repository.findOne( { where: { id: userId } } );
         if ( !user ) {
             throw new AppError( 404, 'User not found' );

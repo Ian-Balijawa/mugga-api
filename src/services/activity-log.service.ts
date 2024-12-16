@@ -9,7 +9,7 @@ interface LogActivityParams {
     type: ActivityType;
     description: string;
     entityType: string;
-    entityId?: string;
+    entityId?: number;
     oldValues?: Record<string, any>;
     newValues?: Record<string, any>;
     metadata?: Record<string, any>;
@@ -24,8 +24,8 @@ interface FetchLogsParams {
     endDate?: Date;
     type?: ActivityType;
     entityType?: string;
-    entityId?: string;
-    userId?: string;
+    entityId?: number;
+    userId?: number;
 }
 
 interface FetchLogsResponse {
@@ -70,7 +70,7 @@ export class ActivityLogService extends BaseService<ActivityLog> {
     async logEntityChange(
         type: ActivityType,
         entityType: string,
-        entityId: string,
+        entityId: number,
         description: string,
         oldValues: Record<string, any> | null,
         newValues: Record<string, any> | null,
@@ -107,7 +107,7 @@ export class ActivityLogService extends BaseService<ActivityLog> {
         } );
     }
 
-    async findByEntity( entityType: string, entityId: string ): Promise<ActivityLog[]> {
+    async findByEntity( entityType: string, entityId: number ): Promise<ActivityLog[]> {
         return this.repository.find( {
             where: { entityType, entityId },
             relations: ['user'],
@@ -115,7 +115,7 @@ export class ActivityLogService extends BaseService<ActivityLog> {
         } );
     }
 
-    async findByUser( userId: string ): Promise<ActivityLog[]> {
+    async findByUser( userId: number ): Promise<ActivityLog[]> {
         return this.repository.find( {
             where: { user: { id: userId } },
             order: { createdAt: 'DESC' }
@@ -174,7 +174,7 @@ export class ActivityLogService extends BaseService<ActivityLog> {
         } );
     }
 
-    async getEntityHistory( entityType: string, entityId: string ): Promise<ActivityLog[]> {
+    async getEntityHistory( entityType: string, entityId: number ): Promise<ActivityLog[]> {
         return this.repository.find( {
             where: { entityType, entityId },
             relations: ['user'],
@@ -182,7 +182,7 @@ export class ActivityLogService extends BaseService<ActivityLog> {
         } );
     }
 
-    async getUserActivity( userId: string, limit: number = 10 ): Promise<ActivityLog[]> {
+    async getUserActivity( userId: number, limit: number = 10 ): Promise<ActivityLog[]> {
         return this.repository.find( {
             where: { user: { id: userId } },
             relations: ['user'],

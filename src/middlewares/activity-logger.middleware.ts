@@ -12,17 +12,17 @@ export function logActivity( entityType: string ) {
         const originalJson = res.json;
         res.json = function ( body: any ) {
             const userContext = req.user;
-            
+
             ( async () => {
                 let user = null;
-                if (userContext) {
+                if ( userContext ) {
                     user = await userService.findById( userContext.userId );
                 }
 
                 const method = req.method;
                 let type: ActivityType;
                 let description: string;
-                let entityId: string | undefined;
+                let entityId: number | undefined;
 
                 switch ( method ) {
                     case 'POST':
@@ -44,7 +44,7 @@ export function logActivity( entityType: string ) {
                     case 'PUT':
                     case 'PATCH':
                         type = ActivityType.UPDATE;
-                        entityId = req.params.id;
+                        entityId = +req.params.id;
                         description = `Updated ${entityType} #${entityId}`;
                         await activityLogService.logEntityChange(
                             type,
@@ -60,12 +60,12 @@ export function logActivity( entityType: string ) {
 
                     case 'DELETE':
                         type = ActivityType.DELETE;
-                        entityId = req.params.id;
+                        entityId = +req.params.id;
                         description = `Deleted ${entityType} #${entityId}`;
                         await activityLogService.logEntityChange(
                             type,
                             entityType,
-                            entityId,
+                            entityId!,
                             description,
                             req.body,
                             null,

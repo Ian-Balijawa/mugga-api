@@ -32,7 +32,7 @@ export class CoachController extends BaseController<Coach> {
 
     async update( req: Request, res: Response ): Promise<void> {
         const data = await coachSchema.partial().parseAsync( req.body );
-        const existingCoach = await this.service.findById( req.params.id );
+        const existingCoach = await this.service.findById( +req.params.id );
 
         if ( req.file ) {
             if ( existingCoach.imageUrl ) {
@@ -42,7 +42,7 @@ export class CoachController extends BaseController<Coach> {
             data.imageUrl = imageUrl;
         }
 
-        const coach = await this.service.update( req.params.id, data );
+        const coach = await this.service.update( +req.params.id, data );
         res.json( {
             success: true,
             data: coach
@@ -50,11 +50,11 @@ export class CoachController extends BaseController<Coach> {
     }
 
     async delete( req: Request, res: Response ): Promise<void> {
-        const coach = await this.service.findById( req.params.id );
+        const coach = await this.service.findById( +req.params.id );
         if ( coach.imageUrl ) {
             await this.fileStorage!.deleteFile( coach.imageUrl );
         }
-        await this.service.delete( req.params.id );
+        await this.service.delete( +req.params.id );
         res.status( 204 ).send();
     }
 

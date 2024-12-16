@@ -29,7 +29,7 @@ export class FacilityController extends BaseController<Facility> {
 
     async update( req: Request, res: Response ): Promise<void> {
         const data = await facilitySchema.partial().parseAsync( req.body );
-        const existingFacility = await this.service.findById( req.params.id );
+        const existingFacility = await this.service.findById( +req.params.id );
 
         if ( req.file ) {
             if ( existingFacility.imageUrl ) {
@@ -39,7 +39,7 @@ export class FacilityController extends BaseController<Facility> {
             data.imageUrl = imageUrl;
         }
 
-        const facility = await this.service.update( req.params.id, data );
+        const facility = await this.service.update( +req.params.id, data );
         res.json( {
             success: true,
             data: facility

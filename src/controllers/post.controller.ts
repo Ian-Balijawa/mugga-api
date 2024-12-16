@@ -32,7 +32,7 @@ export class PostController extends BaseController<Post> {
 
     async update( req: Request, res: Response ): Promise<void> {
         const data = await postSchema.partial().parseAsync( req.body );
-        const existingPost = await this.service.findById( req.params.id );
+        const existingPost = await this.service.findById( +req.params.id );
 
         if ( req.file ) {
             if ( existingPost.imageUrl ) {
@@ -42,7 +42,7 @@ export class PostController extends BaseController<Post> {
             data.imageUrl = imageUrl;
         }
 
-        const post = await this.service.update( req.params.id, data );
+        const post = await this.service.update( +req.params.id, data );
         res.json( {
             success: true,
             data: post
@@ -50,11 +50,11 @@ export class PostController extends BaseController<Post> {
     }
 
     async delete( req: Request, res: Response ): Promise<void> {
-        const post = await this.service.findById( req.params.id );
+        const post = await this.service.findById( +req.params.id );
         if ( post.imageUrl ) {
             await this.fileStorage!.deleteFile( post.imageUrl );
         }
-        await this.service.delete( req.params.id );
+        await this.service.delete( +req.params.id );
         res.status( 204 ).send();
     }
 

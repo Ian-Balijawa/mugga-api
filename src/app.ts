@@ -20,6 +20,7 @@ import { facilityRoutes } from './routes/facility.routes';
 import { programRoutes } from './routes/program.routes';
 import { registrationRoutes } from './routes/registration.routes';
 import { statsRoutes } from './routes/stats.routes';
+import { logActivity } from './middlewares/activity-logger.middleware';
 
 // Global error handlers
 process.on( 'uncaughtException', ( error: Error ) => {
@@ -61,16 +62,16 @@ app.use( rateLimit( {
 } ) );
 
 // Routes
-app.use( '/api/v1/admin', adminRoutes );
-app.use( '/api/v1/posts', postRoutes );
-app.use( '/api/v1/contact', contactRoutes );
+app.use( '/api/v1/admin', logActivity( 'admin' ), adminRoutes );
+app.use( '/api/v1/posts', logActivity( 'post' ), postRoutes );
+app.use( '/api/v1/contact', logActivity( 'contact' ), contactRoutes );
 
-app.use( '/api/v1/coaches', coachRoutes );
-app.use( '/api/v1/gallery', galleryRoutes );
-app.use( '/api/v1/facilities', facilityRoutes );
-app.use( '/api/v1/programs', programRoutes );
-app.use( '/api/v1/registrations', registrationRoutes );
-app.use( '/api/v1/stats', statsRoutes );
+app.use( '/api/v1/coaches', logActivity( 'coach' ), coachRoutes );
+app.use( '/api/v1/gallery', logActivity( 'gallery' ), galleryRoutes );
+app.use( '/api/v1/facilities', logActivity( 'facility' ), facilityRoutes );
+app.use( '/api/v1/programs', logActivity( 'program' ), programRoutes );
+app.use( '/api/v1/registration', logActivity( 'registration' ), registrationRoutes );
+app.use( '/api/v1/stats', logActivity( 'stats' ), statsRoutes );
 
 
 // Error Handler

@@ -14,7 +14,7 @@ export interface ErrorResponse {
 }
 
 export interface UserContext {
-  userId: string;
+  userId: number;
   roles: string[];
 }
 

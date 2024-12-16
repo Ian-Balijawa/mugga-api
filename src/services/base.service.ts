@@ -15,7 +15,7 @@ export abstract class BaseService<T extends BaseEntity> {
     } );
   }
 
-  async findById( id: string ): Promise<T> {
+  async findById( id: number ): Promise<T> {
     const entity = await this.repository.findOne( {
       where: { id } as FindOptionsWhere<T>,
       withDeleted: false
@@ -33,24 +33,23 @@ export abstract class BaseService<T extends BaseEntity> {
     return this.repository.save( entity );
   }
 
-  async update( id: string, data: DeepPartial<T> ): Promise<T> {
+  async update( id: number, data: DeepPartial<T> ): Promise<T> {
     const entity = await this.findById( id );
     Object.assign( entity, data );
     return this.repository.save( entity );
   }
 
-  async delete( id: string, userId?: string ): Promise<void> {
-    const entity = await this.findById( id );
+  async delete( id: number | string, userId?: number | string ): Promise<void> {
+    const numericId = typeof id === 'string' ? parseInt( id ) : id;
+    const numericUserId = userId ? ( typeof userId === 'string' ? parseInt( userId ) : userId ) : undefined;
 
-    // Update soft delete fields
+    const entity = await this.findById( numericId );
     entity.isDeleted = true;
-    entity.deletedBy = userId;
-
-    // Use TypeORM's soft delete
+    entity.deletedBy = numericUserId;
     await this.repository.softRemove( entity );
   }
 
-  async restore( id: string ): Promise<T> {
+  async restore( id: number ): Promise<T> {
     const entity = await this.repository.findOne( {
       where: { id } as FindOptionsWhere<T>,
       withDeleted: true

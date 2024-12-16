@@ -11,7 +11,7 @@ export class RegistrationService extends BaseService<Registration> {
         super( AppDataSource.getRepository( Registration ) );
     }
 
-    async findByProgram( programId: string ): Promise<Registration[]> {
+    async findByProgram( programId: number ): Promise<Registration[]> {
         return this.repository.find( {
             where: { program: { id: programId } },
             relations: ['program'],
@@ -38,7 +38,7 @@ export class RegistrationService extends BaseService<Registration> {
         } );
     }
 
-    async checkProgramAvailability( programId: string ): Promise<boolean> {
+    async checkProgramAvailability( programId: number ): Promise<boolean> {
         const registrations = await this.repository.count( {
             where: { program: { id: programId } }
         } );

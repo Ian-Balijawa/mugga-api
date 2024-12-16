@@ -18,11 +18,11 @@ export class AuthService {
         return { token, user }
     }
 
-    async logout( _userId: string ): Promise<void> {
+    async logout( _userId: number ): Promise<void> {
         // Implement token invalidation if needed
     }
 
-    async findById( userId: string ): Promise<User> {
+    async findById( userId: number ): Promise<User> {
         const user = await this.userRepository.findOne( { where: { id: userId } } );
         if ( !user ) {
             throw new AppError( 404, 'User not found' );
@@ -40,7 +40,7 @@ export class AuthService {
 
     async verifyToken( token: string ): Promise<User> {
         try {
-            const decoded = jwt.verify( token, env.JWT_SECRET ) as { userId: string };
+            const decoded = jwt.verify( token, env.JWT_SECRET ) as { userId: number };
             const user = await this.userRepository.findOne( { where: { id: decoded.userId } } );
 
             if ( !user ) {

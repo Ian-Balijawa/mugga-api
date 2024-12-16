@@ -6,11 +6,11 @@
 		"watch": "tsc -w",
 		"start": "tsc && node dist/app.js",
 		"dev": "node --watch dist/app.js",
-		"typeorm": "typeorm-ts-node-esm",
-		"migration:generate": "typeorm-ts-node-esm migration:generate ./src/migrations/migration -d ./src/config/database.config.ts",
+		"typeorm": "typeorm-ts-node-commonjs",
+		"migration:generate": "npm run typeorm migration:generate",
 		"migration:create": "typeorm-ts-node-esm migration:create ./src/migrations/migration",
-		"migration:run": "typeorm-ts-node-esm migration:run -d ./src/config/database.config.ts",
-		"migration:revert": "typeorm-ts-node-esm migration:revert -d ./src/config/database.config.ts"
+		"migration:run": "npm run typeorm migration:run -- -d src/config/database.config.ts",
+		"migration:revert": "npm run typeorm migration:revert -- -d src/config/database.config.ts"
 	},
 	"dependencies": {
 		"@types/multer": "^1.4.12",

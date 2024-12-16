@@ -50,7 +50,7 @@ export class StatsService {
             this.registrationRepository.count(),
             this.galleryRepository.count(),
             this.programRepository.count( { where: { isActive: true } } ),
-            this.activityLogService.getRecentLogs( 10 )
+            this.activityLogService.getRecentLogs( 20 )
         ] );
 
         return {
