@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
-import multer from 'multer';
 import { FacilityController } from '../controllers/facility.controller';
 
 const router = Router();
 const facilityController = new FacilityController();
-const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
@@ -116,19 +114,16 @@ router.use( authorize( 'admin' ) );
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             required:
  *               - name
  *               - description
  *               - features
+ *               - imageUrl
  *               - equipment
- *               - image
  *             properties:
- *               image:
- *                 type: string
- *                 format: binary
  *               name:
  *                 type: string
  *               description:
@@ -137,6 +132,9 @@ router.use( authorize( 'admin' ) );
  *                 type: array
  *                 items:
  *                   type: string
+ *               imageUrl:
+ *                 type: string
+ *                 format: uri
  *               equipment:
  *                 type: array
  *                 items:
@@ -159,10 +157,7 @@ router.use( authorize( 'admin' ) );
  *       403:
  *         description: Forbidden - Requires admin role
  */
-router.post( '/',
-    upload.single( 'image' ),
-    facilityController.create.bind( facilityController )
-);
+router.post( '/', facilityController.create.bind( facilityController ) );
 
 /**
  * @swagger
@@ -215,10 +210,7 @@ router.post( '/',
  *                 data:
  *                   $ref: '#/components/schemas/Facility'
  */
-router.put( '/:id',
-    upload.single( 'image' ),
-    facilityController.update.bind( facilityController )
-);
+router.put( '/:id', facilityController.update.bind( facilityController ) );
 
 /**
  * @swagger

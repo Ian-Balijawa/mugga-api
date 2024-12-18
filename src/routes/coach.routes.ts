@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
-import multer from 'multer';
 import { CoachController } from '../controllers/coach.controller';
 
 const router = Router();
 const coachController = new CoachController();
-const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
@@ -118,26 +116,29 @@ router.use( authorize( 'admin' ) );
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
+ *               - role
+ *               - bio
+ *               - imageUrl
+ *               - specialties
  *             properties:
- *               image:
- *                 type: string
- *                 format: binary
  *               name:
  *                 type: string
  *               role:
  *                 type: string
  *               bio:
  *                 type: string
+ *               imageUrl:
+ *                 type: string
+ *                 format: uri
  *               specialties:
  *                 type: array
  *                 items:
  *                   type: string
- *               userId:
- *                 type: string
- *                 format: uuid
  *     responses:
  *       201:
  *         description: Coach profile created successfully
@@ -156,10 +157,7 @@ router.use( authorize( 'admin' ) );
  *       403:
  *         description: Forbidden - Requires admin role
  */
-router.post( '/',
-    upload.single( 'image' ),
-    coachController.create.bind( coachController )
-);
+router.post( '/', coachController.create.bind( coachController ) );
 
 /**
  * @swagger
@@ -217,10 +215,7 @@ router.post( '/',
  *       404:
  *         description: Coach not found
  */
-router.put( '/:id',
-    upload.single( 'image' ),
-    coachController.update.bind( coachController )
-);
+router.put( '/:id', coachController.update.bind( coachController ) );
 
 /**
  * @swagger

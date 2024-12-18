@@ -72,4 +72,16 @@ export class AuthService {
 
         return this.userRepository.save( user );
     }
+
+    async delete( userId: number ): Promise<void> {
+        await this.userRepository.delete( userId );
+    }
+
+    async update( userId: number, data: Partial<User> ): Promise<User> {
+        const user = await this.userRepository.findOne( { where: { id: userId } } );
+        if ( !user ) {
+            throw new AppError( 404, 'User not found' );
+        }
+        return this.userRepository.save( { ...user, ...data } );
+    }
 }

@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
-import multer from 'multer';
 import { GalleryController } from '../controllers/gallery.controller';
 
 const router = Router();
 const galleryController = new GalleryController();
-const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
@@ -142,30 +140,30 @@ router.use( authorize( 'admin' ) );
  * @swagger
  * /api/v1/gallery:
  *   post:
- *     summary: Create a new gallery item
+ *     summary: Add a new gallery item
  *     tags: [Gallery]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             required:
  *               - title
  *               - category
+ *               - imageUrl
  *               - date
- *               - image
  *             properties:
- *               image:
- *                 type: string
- *                 format: binary
  *               title:
  *                 type: string
  *               category:
  *                 type: string
  *                 enum: [events, facilities, training, competitions]
+ *               imageUrl:
+ *                 type: string
+ *                 format: uri
  *               date:
  *                 type: string
  *                 format: date
@@ -187,10 +185,7 @@ router.use( authorize( 'admin' ) );
  *       403:
  *         description: Forbidden - Requires admin role
  */
-router.post( '/',
-    upload.single( 'image' ),
-    galleryController.create.bind( galleryController )
-);
+router.post( '/', galleryController.create.bind( galleryController ) );
 
 /**
  * @swagger
@@ -239,10 +234,7 @@ router.post( '/',
  *                 data:
  *                   $ref: '#/components/schemas/GalleryItem'
  */
-router.put( '/:id',
-    upload.single( 'image' ),
-    galleryController.update.bind( galleryController )
-);
+router.put( '/:id', galleryController.update.bind( galleryController ) );
 
 /**
  * @swagger

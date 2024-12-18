@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { authenticate } from '../middlewares/auth.middleware';
+import { authenticate, authorize } from '../middlewares/auth.middleware';
 import { AuthController } from '../controllers/auth.controller';
 
 const router = Router();
@@ -177,6 +177,54 @@ router.get( '/me',
  */
 router.post( '/signup',
     authController.signup.bind( authController )
+);
+
+/**
+ * @swagger
+ * /api/v1/v1/admin/:id:
+ *   patch:
+ *     summary: Update an admin account
+ *     tags: [Admin]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserProfile'
+ *     responses:
+ *       200:
+ *         description: Admin account updated successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ */
+router.patch( '/:id',
+    authenticate,
+    authorize('admin'),
+    authController.update.bind( authController )
+);
+
+/**
+ * @swagger
+ * /api/v1/v1/admin/:id:
+ *   delete:
+ *     summary: Delete an admin account
+ *     tags: [Admin]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       204:
+ *         description: Admin account deleted successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.delete( '/:id',
+    authenticate,
+    authorize('admin'),
+    authController.delete.bind( authController )
 );
 
 export { router as adminRoutes };

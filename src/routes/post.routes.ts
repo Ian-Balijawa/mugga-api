@@ -1,16 +1,9 @@
 import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
-import multer from 'multer';
 import { PostController } from '../controllers/post.controller';
 
 const router = Router();
 const postController = new PostController();
-const upload = multer( {
-    storage: multer.memoryStorage(),
-    limits: {
-        fileSize: 10 * 1024 * 1024 // 10MB limit
-    }
-} );
 
 /**
  * @swagger
@@ -130,7 +123,7 @@ router.use( authorize( 'admin' ) );
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             required:
@@ -138,38 +131,23 @@ router.use( authorize( 'admin' ) );
  *               - content
  *               - category
  *             properties:
- *               image:
- *                 type: string
- *                 format: binary
  *               title:
  *                 type: string
  *               content:
  *                 type: string
+ *               imageUrl:
+ *                 type: string
+ *                 format: uri
  *               videoUrl:
  *                 type: string
+ *                 format: uri
  *               category:
  *                 type: string
  *                 enum: [news, events, updates]
- *     responses:
- *       201:
- *         description: Post created successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 data:
- *                   $ref: '#/components/schemas/Post'
- *       401:
- *         description: Unauthorized
- *       403:
- *         description: Forbidden - Requires admin role
  */
 router.post( '/',
-    upload.single( 'image' ),
+    authenticate,
+    authorize( 'admin' ),
     postController.create.bind( postController )
 );
 
@@ -191,13 +169,10 @@ router.post( '/',
  *         description: Post ID
  *     requestBody:
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               image:
- *                 type: string
- *                 format: binary
  *               title:
  *                 type: string
  *               content:
@@ -227,7 +202,6 @@ router.post( '/',
  *         description: Post not found
  */
 router.put( '/:id',
-    upload.single( 'image' ),
     postController.update.bind( postController )
 );
 

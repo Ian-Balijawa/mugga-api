@@ -217,6 +217,10 @@ router.put( '/:id',
     programController.update.bind( programController )
 );
 
+router.patch( '/:id',
+    programController.patch.bind( programController )
+);
+
 router.delete( '/:id', programController.delete.bind( programController ) );
 
 export { router as programRoutes };

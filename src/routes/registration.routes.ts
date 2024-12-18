@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { RegistrationController } from '../controllers/registration.controller';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
+import { RegistrationController } from '../controllers/registration.controller';
 
 const router = Router();
 const registrationController = new RegistrationController();

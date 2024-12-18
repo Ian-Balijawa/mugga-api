@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { BaseService } from '../services/base.service';
-import { FileStorageService } from '../services/file-storage.service';
 import { BaseEntity } from '../entities/base.entity';
 
 export abstract class BaseController<T extends BaseEntity> {
     constructor(
-        protected service: BaseService<T>,
-        protected fileStorage?: FileStorageService
+        protected service: BaseService<T>
     ) { }
 
     async create( req: Request, res: Response ): Promise<void> {
@@ -50,6 +48,14 @@ export abstract class BaseController<T extends BaseEntity> {
     // Optional: Add restore endpoint
     async restore( req: Request, res: Response ): Promise<void> {
         const entity = await this.service.restore( +req.params.id );
+        res.json( {
+            success: true,
+            data: entity
+        } );
+    }
+
+    async patch( req: Request, res: Response ): Promise<void> {
+        const entity = await this.service.update( +req.params.id, req.body );
         res.json( {
             success: true,
             data: entity

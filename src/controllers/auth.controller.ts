@@ -33,4 +33,17 @@ export class AuthController {
             data: user
         } );
     }
+
+    async update( req: Request, res: Response ): Promise<void> {
+        const user = await this.authService.update( +req.params.id, req.body );
+        res.json( {
+            success: true,
+            data: user
+        } );
+    }
+
+    async delete( req: Request, res: Response ): Promise<void> {
+        await this.authService.delete( +req.params.id );
+        res.status( 204 ).send();
+    }
 }
