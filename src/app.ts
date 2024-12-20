@@ -50,11 +50,6 @@ app.use( morgan( 'common' ) );
 app.use( express.json() );
 app.use( express.urlencoded( { extended: true } ) );
 app.use( express.static( 'public' ) );
-app.use( '/uploads', ( _req, res, next ) => {
-  res.setHeader( 'cross-origin-resource-policy', 'cross-origin' );
-  next();
-} );
-
 
 app.use( rateLimit( {
   windowMs: 15 * 60 * 1000, // 15 minutes

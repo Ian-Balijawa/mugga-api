@@ -46,7 +46,6 @@ A comprehensive Content Management System for Arena Sports Academy built with Ty
 - Node.js & TypeScript
 - Express.js
 - TypeORM with MySQL
-- Multer for file uploads
 - Nodemailer for email communications
 - Zod for validation
 - Swagger for API documentation

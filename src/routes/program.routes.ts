@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
-import multer from 'multer';
 import { ProgramController } from '../controllers/program.controller';
 
 const router = Router();
 const programController = new ProgramController();
-const upload = multer( { storage: multer.memoryStorage() } );
 
 /**
  * @swagger
@@ -208,12 +206,10 @@ router.use( authorize( 'admin' ) );
  *         description: Forbidden - Requires admin role
  */
 router.post( '/',
-    upload.single( 'image' ),
     programController.create.bind( programController )
 );
 
 router.put( '/:id',
-    upload.single( 'image' ),
     programController.update.bind( programController )
 );
 
