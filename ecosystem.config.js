@@ -2,7 +2,7 @@
 module.exports = {
 	apps: [
 		{
-			name: "loan_management",
+			name: "arena_sports_academy",
 			script: "dist/app.js",
 			watch: false,
 			ignore_watch: ["dist"],
