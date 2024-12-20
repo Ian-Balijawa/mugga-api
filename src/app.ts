@@ -75,6 +75,11 @@ app.get( `/api/${API_VERSION}/health`, ( _req, res ) => {
   res.status( 200 ).send( 'OK' );
 } );
 
+// hello world
+app.get( `/`, ( _req, res ) => {
+  res.status( 200 ).send( 'Hello World' );
+} );
+
 // Error Handler
 app.use( errorHandler );
 
