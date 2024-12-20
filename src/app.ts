@@ -70,6 +70,10 @@ app.use( `/api/${API_VERSION}/programs`, logActivity( 'program' ), programRoutes
 app.use( `/api/${API_VERSION}/registrations`, logActivity( 'registration' ), registrationRoutes );
 app.use( `/api/${API_VERSION}/stats`, logActivity( 'stats' ), statsRoutes );
 
+// add a health check route
+app.get( `/api/${API_VERSION}/health`, ( _req, res ) => {
+  res.status( 200 ).send( 'OK' );
+} );
 
 // Error Handler
 app.use( errorHandler );
