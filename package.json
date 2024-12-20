@@ -6,6 +6,7 @@
 		"watch": "tsc -w",
 		"start": "tsc && node dist/app.js",
 		"dev": "node --watch dist/app.js",
+		"build": "tsc",
 		"typeorm": "typeorm-ts-node-commonjs",
 		"migration:generate": "npm run typeorm migration:generate",
 		"migration:create": "typeorm-ts-node-esm migration:create ./src/migrations/migration",

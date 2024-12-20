@@ -72,7 +72,7 @@ app.use( `/api/${API_VERSION}/stats`, logActivity( 'stats' ), statsRoutes );
 
 // add a health check route
 app.get( `/api/${API_VERSION}/health`, ( _req, res ) => {
-  res.status( 200 ).send( 'OK' );
+  res.status( 200 ).send( 'Server is up and running' );
 } );
 
 // hello world
