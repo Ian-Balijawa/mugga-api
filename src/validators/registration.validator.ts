@@ -6,7 +6,7 @@ export const registrationSchema = z.object( {
     email: z.string().email(),
     phone: z.string().min( 10 ).max( 15 ),
     dateOfBirth: z.string().transform( str => new Date( str ) ),
-    programId: z.string().uuid(),
+    programId: z.number(),
     startDate: z.string().transform( str => new Date( str ) ),
     emergencyName: z.string().min( 1 ).max( 100 ),
     emergencyPhone: z.string().min( 10 ).max( 15 ),

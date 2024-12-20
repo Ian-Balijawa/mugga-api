@@ -72,7 +72,7 @@ app.use( `/api/${API_VERSION}/coaches`, logActivity( 'coach' ), coachRoutes );
 app.use( `/api/${API_VERSION}/gallery`, logActivity( 'gallery' ), galleryRoutes );
 app.use( `/api/${API_VERSION}/facilities`, logActivity( 'facility' ), facilityRoutes );
 app.use( `/api/${API_VERSION}/programs`, logActivity( 'program' ), programRoutes );
-app.use( `/api/${API_VERSION}/registration`, logActivity( 'registration' ), registrationRoutes );
+app.use( `/api/${API_VERSION}/registrations`, logActivity( 'registration' ), registrationRoutes );
 app.use( `/api/${API_VERSION}/stats`, logActivity( 'stats' ), statsRoutes );
 
 

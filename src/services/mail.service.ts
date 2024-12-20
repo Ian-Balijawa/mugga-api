@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import { ContactFormData } from '../types/common.types';
 import { Registration } from '../entities/registration.entity';
 import env from '../config/env.config';
+import { Logger } from '../utils/logger';
 
 export class MailService {
     private transporter: nodemailer.Transporter;
@@ -28,6 +29,8 @@ export class MailService {
     }
 
     async sendRegistrationConfirmation( registration: Registration ): Promise<void> {
+        Logger.info( `Registration Confirmation Email Template: ${registration}` );
+
         await this.transporter.sendMail( {
             from: env.SMTP_USER,
             to: registration.email,
@@ -48,6 +51,9 @@ export class MailService {
     }
 
     private generateRegistrationEmailTemplate( registration: Registration ): string {
+
+        Logger.info( `Registration Confirmation Email Template: ${registration}` );
+
         return `
             <h2>Registration Confirmation</h2>
             <p>Dear ${registration.firstName},</p>

@@ -18,7 +18,11 @@ export class RegistrationController extends BaseController<Registration> {
 
     async create( req: Request, res: Response ): Promise<void> {
         const data = await registrationSchema.parseAsync( req.body );
+
+        console.log( `Data: ${data.programId}` );
         const registration = await this.service.create( data );
+
+        console.error( `Registration: ${registration}` );
 
         // Send confirmation email
         await this.mailService.sendRegistrationConfirmation( registration );

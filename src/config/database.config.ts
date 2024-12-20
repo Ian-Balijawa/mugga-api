@@ -19,7 +19,7 @@ export const AppDataSource = new DataSource( {
   password: env.DB_PASS,
   database: env.DB_NAME,
   synchronize: env.NODE_ENV === 'development',
-  logging: env.NODE_ENV === 'development',
+  // logging: env.NODE_ENV === 'development',
   entities: [
     BaseEntity,
     Post,
