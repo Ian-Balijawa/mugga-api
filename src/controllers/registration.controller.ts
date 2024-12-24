@@ -2,30 +2,24 @@ import { Request, Response } from 'express';
 import { BaseController } from './base.controller';
 import { Registration } from '../entities/registration.entity';
 import { RegistrationService } from '../services/registration.service';
-import { registrationSchema } from '../validators/registration.validator';
-import { MailService } from '../services/mail.service';
+import { RegistrationInput, registrationSchema } from '../validators/registration.validator';
 
 export class RegistrationController extends BaseController<Registration> {
     private registrationService: RegistrationService;
-    private mailService: MailService;
 
     constructor() {
         const registrationService = new RegistrationService();
         super( registrationService );
         this.registrationService = registrationService;
-        this.mailService = new MailService();
     }
 
     async create( req: Request, res: Response ): Promise<void> {
-        const data = await registrationSchema.parseAsync( req.body );
+        const data = await registrationSchema.parseAsync( req.body as RegistrationInput );
 
         console.log( `Data: ${data.programId}` );
-        const registration = await this.service.create( data );
+        const registration = await this.service.create( {...data, program: { id: data.programId }} );
 
         console.error( `Registration: ${registration}` );
-
-        // Send confirmation email
-        await this.mailService.sendRegistrationConfirmation( registration );
 
         res.status( 201 ).json( {
             success: true,

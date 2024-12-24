@@ -1,5 +1,6 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { Registration } from './registration.entity';
 
 export type ProgramCategory = 'training' | 'camp' | 'clinic';
 
@@ -34,4 +35,7 @@ export class Program extends BaseEntity {
 
     @Column( { default: 20 } )
     maxParticipants: number;
+
+    @OneToMany( () => Registration, (registration) => registration.program )
+    registrations: Registration[];
 }

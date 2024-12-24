@@ -11,7 +11,8 @@ export abstract class BaseService<T extends BaseEntity> {
 
   async findAll(): Promise<T[]> {
     return this.repository.find( {
-      withDeleted: false
+      withDeleted: false,
+      where: { isDeleted: false } as FindOptionsWhere<T>,
     } );
   }
 

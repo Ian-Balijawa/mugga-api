@@ -19,7 +19,10 @@ export class Registration extends BaseEntity {
     @Column('date')
     dateOfBirth: Date;
 
-    @ManyToOne(() => Program)
+    @ManyToOne(() => Program, (program) => program.registrations,{
+        cascade: true,
+        eager: true
+    })
     program: Program;
 
     @Column('date')
