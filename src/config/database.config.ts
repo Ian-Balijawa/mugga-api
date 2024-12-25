@@ -10,6 +10,7 @@ import { Program } from '../entities/program.entity';
 import { Registration } from '../entities/registration.entity';
 import { User } from '../entities/user.entity';
 import { ActivityLog } from '../entities/activity-log.entity';
+import { NewsLetterSubscription } from '../entities/news-letter-subscriptions';
 
 export const AppDataSource = new DataSource( {
   type: 'mysql',
@@ -19,7 +20,7 @@ export const AppDataSource = new DataSource( {
   password: env.DB_PASS,
   database: env.DB_NAME,
   synchronize: env.NODE_ENV === 'development',
-  // logging: env.NODE_ENV === 'development',
+  logging: env.NODE_ENV === 'development',
   entities: [
     BaseEntity,
     Post,
@@ -29,7 +30,8 @@ export const AppDataSource = new DataSource( {
     Program,
     Registration,
     User,
-    ActivityLog
+    ActivityLog,
+    NewsLetterSubscription
   ],
   migrations: ['src/migrations/*.ts'],
 } );

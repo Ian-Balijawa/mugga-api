@@ -13,7 +13,6 @@ import { Logger } from './utils/logger';
 import { setupSwagger } from './config/swagger.config';
 import { adminRoutes } from './routes/admin.routes';
 import { postRoutes } from './routes/post.routes';
-import { contactRoutes } from './routes/contact.routes';
 import { coachRoutes } from './routes/coach.routes';
 import { galleryRoutes } from './routes/gallery.routes';
 import { facilityRoutes } from './routes/facility.routes';
@@ -21,7 +20,8 @@ import { programRoutes } from './routes/program.routes';
 import { registrationRoutes } from './routes/registration.routes';
 import { statsRoutes } from './routes/stats.routes';
 import { logActivity } from './middlewares/activity-logger.middleware';
-
+import { contactRoutes } from './routes/contact.routes';
+import { newsLetterRoutes } from './routes/news-letter.routes';
 // Global error handlers
 process.on( 'uncaughtException', ( error: Error ) => {
   Logger.error( 'Uncaught Exception:', error );
@@ -61,7 +61,6 @@ const API_VERSION = 'v1';
 // Routes
 app.use( `/api/${API_VERSION}/admin`, logActivity( 'admin' ), adminRoutes );
 app.use( `/api/${API_VERSION}/posts`, logActivity( 'post' ), postRoutes );
-app.use( `/api/${API_VERSION}/contact`, logActivity( 'contact' ), contactRoutes );
 
 app.use( `/api/${API_VERSION}/coaches`, logActivity( 'coach' ), coachRoutes );
 app.use( `/api/${API_VERSION}/gallery`, logActivity( 'gallery' ), galleryRoutes );
@@ -69,6 +68,8 @@ app.use( `/api/${API_VERSION}/facilities`, logActivity( 'facility' ), facilityRo
 app.use( `/api/${API_VERSION}/programs`, logActivity( 'program' ), programRoutes );
 app.use( `/api/${API_VERSION}/registrations`, logActivity( 'registration' ), registrationRoutes );
 app.use( `/api/${API_VERSION}/stats`, logActivity( 'stats' ), statsRoutes );
+app.use( `/api/${API_VERSION}/contact`, contactRoutes );
+app.use( `/api/${API_VERSION}/newsletter`, newsLetterRoutes );
 
 // add a health check route
 app.get( `/api/${API_VERSION}/health`, ( _req, res ) => {
