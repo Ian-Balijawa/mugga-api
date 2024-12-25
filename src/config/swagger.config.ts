@@ -18,6 +18,10 @@ const options = {
       {
         url: process.env.API_URL || 'http://localhost:8000',
         description: 'Development server'
+      },
+      {
+        url: process.env.API_URL_PROD || 'https://arena.ianbalijawa.com',
+        description: 'Production server'
       }
     ],
     components: {
