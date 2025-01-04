@@ -1,6 +1,6 @@
 {
 	"license": "MIT",
-	"name": "loan-management-system",
+	"name": "arena-sports-academy-backend",
 	"version": "1.0.0",
 	"scripts": {
 		"watch": "tsc -w",
