@@ -11,6 +11,7 @@ import { Registration } from '../entities/registration.entity';
 import { User } from '../entities/user.entity';
 import { ActivityLog } from '../entities/activity-log.entity';
 import { NewsLetterSubscription } from '../entities/news-letter-subscriptions';
+import { Alumni } from '../entities/alumni.entity';
 
 export const AppDataSource = new DataSource( {
   type: 'mysql',
@@ -31,7 +32,8 @@ export const AppDataSource = new DataSource( {
     Registration,
     User,
     ActivityLog,
-    NewsLetterSubscription
+    NewsLetterSubscription,
+    Alumni
   ],
   migrations: ['src/migrations/*.ts'],
 } );
