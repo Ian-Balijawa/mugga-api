@@ -15,6 +15,7 @@ const galleryController = new GalleryController();
  *         - title
  *         - category
  *         - date
+ *         - type
  *       properties:
  *         id:
  *           type: string
@@ -30,7 +31,15 @@ const galleryController = new GalleryController();
  *         imageUrl:
  *           type: string
  *           format: uri
- *           description: URL to the gallery image
+ *           description: URL to the gallery image (optional)
+ *         videoUrl:
+ *           type: string
+ *           format: uri
+ *           description: URL to the gallery video (optional)
+ *         type:
+ *           type: string
+ *           enum: [image, video, both]
+ *           description: Type of media content
  *         date:
  *           type: string
  *           format: date
@@ -153,8 +162,8 @@ router.use( authorize( 'admin' ) );
  *             required:
  *               - title
  *               - category
- *               - imageUrl
  *               - date
+ *               - type
  *             properties:
  *               title:
  *                 type: string
@@ -164,6 +173,12 @@ router.use( authorize( 'admin' ) );
  *               imageUrl:
  *                 type: string
  *                 format: uri
+ *               videoUrl:
+ *                 type: string
+ *                 format: uri
+ *               type:
+ *                 type: string
+ *                 enum: [image, video, both]
  *               date:
  *                 type: string
  *                 format: date

@@ -21,9 +21,8 @@ export class GalleryController extends BaseController<GalleryItem> {
             data: item
         } );
     }
-
     async update( req: Request, res: Response ): Promise<void> {
-        const data = await galleryItemSchema.partial().parseAsync( req.body );
+        const data = await galleryItemSchema.parseAsync( req.body );
         const item = await this.service.update( +req.params.id, data );
         res.json( {
             success: true,
