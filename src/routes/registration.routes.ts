@@ -108,10 +108,6 @@ router.post( '/',
     registrationController.create.bind( registrationController )
 );
 
-// Protected routes
-router.use( authenticate );
-router.use( authorize( 'admin' ) );
-
 /**
  * @swagger
  * /api/v1/registrations:
@@ -159,6 +155,10 @@ router.use( authorize( 'admin' ) );
 router.get( '/',
     registrationController.findAll.bind( registrationController )
 );
+
+// Protected routes
+router.use( authenticate );
+router.use( authorize( 'admin' ) );
 
 router.get( '/:id',
     registrationController.findById.bind( registrationController )
