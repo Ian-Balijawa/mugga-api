@@ -41,12 +41,20 @@ setupSwagger( app );
 // Middleware
 app.use( helmet() );
 app.use( compression() );
-app.use( cors( {
-  origin: '*',
+const allowedOrigins = ['http://localhost:3000', 'https://tours.ianbalijawa.com'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Range', 'X-Total-Count'],
-} ) );
+}));
+
 app.use( morgan( 'common' ) );
 app.use( express.json() );
 app.use( express.urlencoded( { extended: true } ) );
