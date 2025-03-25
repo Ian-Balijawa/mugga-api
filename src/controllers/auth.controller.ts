@@ -12,6 +12,7 @@ export class AuthController {
     async login( req: Request, res: Response ): Promise<void> {
         const { email, password } = await loginSchema.parseAsync( req.body );
         const { token, user } = await this.authService.login( email, password );
+        console.log(token, user)
         res.json( { success: true, data: { token, user } } );
     }
 
@@ -28,6 +29,8 @@ export class AuthController {
     async signup( req: Request, res: Response ): Promise<void> {
         const data = await signupSchema.parseAsync( req.body );
         const user = await this.authService.createAdmin( data );
+
+        console.log(user)
         res.status( 201 ).json( {
             success: true,
             data: user
