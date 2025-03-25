@@ -27,14 +27,28 @@ export class AuthController {
     }
 
     async signup( req: Request, res: Response ): Promise<void> {
-        const data = await signupSchema.parseAsync( req.body );
-        const user = await this.authService.createAdmin( data );
+        try {
+            console.log('Signup Request Body:', req.body);
 
-        console.log(user)
-        res.status( 201 ).json( {
-            success: true,
-            data: user
-        } );
+            const data = await signupSchema.parseAsync( req.body );
+            console.log('Validated Data:', data);
+
+            const user = await this.authService.createAdmin( data );
+            console.log('Created User:', user);
+
+            res.status( 201 ).json( {
+                success: true,
+                data: user
+            } );
+        } catch ( error ) {
+            console.error('Signup Error:', error);
+
+            // Add more detailed error response
+            res.status( 400 ).json( {
+                success: false,
+                message: error instanceof Error ? error.message : 'Signup failed'
+            } );
+        }
     }
 
     async update( req: Request, res: Response ): Promise<void> {
