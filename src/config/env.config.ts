@@ -25,9 +25,6 @@ export interface EnvConfig {
   SMTP_PASS: string;
 
   MAIL_TO: string;
-
-  APP_NAME: string;
-  APP_URL: string;
 }
 
 const envSchema = z.object( {
@@ -55,9 +52,6 @@ const envSchema = z.object( {
   SMTP_PASS: z.string(),
 
   MAIL_TO: z.string(),
-
-  APP_NAME: z.string(),
-  APP_URL: z.string(),
 } );
 
 const env = envSchema.parse( process.env );
