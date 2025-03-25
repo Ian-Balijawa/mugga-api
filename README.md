@@ -1,6 +1,6 @@
-# Arena Sports Academy CMS
+# tours-travel CMS
 
-A comprehensive Content Management System for Arena Sports Academy built with TypeScript, Express, and TypeORM. This system manages programs, coaches, facilities, registrations, and content.
+A comprehensive Content Management System for tours-travel built with TypeScript, Express, and TypeORM. This system manages programs, coaches, facilities, registrations, and content.
 
 ## Features
 
@@ -63,7 +63,7 @@ A comprehensive Content Management System for Arena Sports Academy built with Ty
 
 ```bash
 git clone [repository-url]
-cd arena-sports-academy
+cd tours-travel
 ```
 
 2. Install dependencies:
@@ -89,7 +89,7 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_USER=your_user
 DB_PASS=your_password
-DB_NAME=arena_sports
+DB_NAME=tours-travel
 
 # JWT
 JWT_SECRET=your_jwt_secret
@@ -100,7 +100,7 @@ SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=your_email
 SMTP_PASS=your_password
-MAIL_FROM=noreply@arenasports.com
+MAIL_FROM=noreply@tours-travel.com
 ```
 
 4. Start the server:

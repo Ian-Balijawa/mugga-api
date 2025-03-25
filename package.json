@@ -1,6 +1,6 @@
 {
 	"license": "MIT",
-	"name": "arena-sports-academy-backend",
+	"name": "tours-travel-backend",
 	"version": "1.0.0",
 	"scripts": {
 		"watch": "tsc -w",

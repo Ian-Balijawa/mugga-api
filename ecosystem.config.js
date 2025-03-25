@@ -2,7 +2,7 @@
 module.exports = {
 	apps: [
 		{
-			name: "arena_sports_academy",
+			name: "tours-travel",
 			script: "dist/app.js",
 			watch: false,
 			ignore_watch: ["dist"],

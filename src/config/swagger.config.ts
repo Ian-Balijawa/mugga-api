@@ -6,12 +6,12 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Sports Academy API',
+      title: 'Tours travel api',
       version: '1.0.0',
-      description: 'API documentation for Sports Academy management system',
+      description: 'API documentation for tours travel management system',
       contact: {
         name: 'API Support',
-        email: 'support@sportsacademy.com'
+        email: 'support@toursacademy.com'
       }
     },
     servers: [
@@ -20,7 +20,7 @@ const options = {
         description: 'Development server'
       },
       {
-        url: process.env.API_URL_PROD || 'https://arena.ianbalijawa.com',
+        url: process.env.API_URL_PROD || 'https://tours-travel.ianbalijawa.com',
         description: 'Production server'
       }
     ],
