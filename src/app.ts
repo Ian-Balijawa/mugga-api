@@ -41,7 +41,21 @@ setupSwagger( app );
 // Middleware
 app.use( helmet() );
 app.use( compression() );
-app.use( cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'https://tours.ianbalijawa.com',
+      'http://localhost:3000'
+    ];
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use( morgan( 'common' ) );
 app.use( express.json() );
 app.use( express.urlencoded( { extended: true } ) );
