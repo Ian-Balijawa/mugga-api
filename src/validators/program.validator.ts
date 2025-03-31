@@ -6,7 +6,7 @@ export const programSchema = z.object( {
     duration: z.string().min( 1 ),
     price: z.number().positive(),
     schedule: z.string().min( 1 ),
-    category: z.enum( ['training', 'camp', 'clinic'] ),
+    category: z.enum( ['activity', 'services', 'destination'] ),
     imageUrl: z.string().url().optional()
 } );
 
