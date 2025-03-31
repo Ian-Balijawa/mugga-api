@@ -23,7 +23,7 @@ export class Program extends BaseEntity {
 
     @Column( {
         type: 'enum',
-        enum: ['destination', 'activity', 'services']
+        enum: ['activity' , 'services' , 'destination']
     } )
     category: ProgramCategory;
 
