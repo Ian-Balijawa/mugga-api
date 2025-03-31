@@ -22,7 +22,7 @@ export const AppDataSource = new DataSource( {
   database: env.DB_NAME,
   // synchronize: env.NODE_ENV === 'development',
   synchronize: true,
-  logging: false,
+  logging: true,
   entities: [
     BaseEntity,
     Post,
