@@ -15,13 +15,8 @@ export class GalleryController extends BaseController<GalleryItem> {
 
     async create( req: Request, res: Response ): Promise<void> {
         const data = await galleryItemSchema.parseAsync( req.body );
-        let item;
-        if ( !data.videoUrl ) {
-            item = await this.service.create( { ...data, videoUrl: undefined } );
-        }
-        if ( !data.imageUrl ) {
-            item = await this.service.create( { ...data, imageUrl: undefined } );
-        }
+        const item = await this.service.create( data );
+
         res.status( 201 ).json( {
             success: true,
             data: item
