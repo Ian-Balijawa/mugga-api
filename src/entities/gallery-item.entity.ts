@@ -1,7 +1,7 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
-export type GalleryCategory = 'events' | 'facilities' | 'training' | 'competitions';
+export type GalleryCategory = 'events' | 'stays' | 'activity' | 'competitions'| 'videos';
 export type GalleryType = 'image' | 'video' | 'both';
 
 @Entity( 'gallery_items' )
@@ -11,7 +11,7 @@ export class GalleryItem extends BaseEntity {
 
     @Column( {
         type: 'enum',
-        enum: ['events', 'facilities', 'training', 'competitions']
+        enum: ['events' , 'stays' , 'activity' ,'competitions', 'videos']
     } )
     category: GalleryCategory;
 

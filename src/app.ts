@@ -41,14 +41,7 @@ setupSwagger( app );
 // Middleware
 app.use( helmet() );
 app.use( compression() );
-app.use(cors({
-  origin:'*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['Content-Range', 'X-Total-Count'],
-  preflightContinue: false,
-  optionsSuccessStatus: 200
-}));
+app.use(cors());
 
 app.use( morgan( 'common' ) );
 app.use( express.json() );

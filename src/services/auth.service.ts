@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import env from '../config/env.config';
 import { SignupInput } from '../validators/auth.validator';
 import { hashPassword, comparePasswords } from '../utils/password.utils';
-
 export class AuthService {
     private userRepository = AppDataSource.getRepository( User );
 

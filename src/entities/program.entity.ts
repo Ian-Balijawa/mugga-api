@@ -2,7 +2,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Registration } from './registration.entity';
 
-export type ProgramCategory = 'training' | 'camp' | 'clinic';
+export type ProgramCategory = 'activity' | 'services' | 'destination';
 
 @Entity( 'programs' )
 export class Program extends BaseEntity {
@@ -23,7 +23,7 @@ export class Program extends BaseEntity {
 
     @Column( {
         type: 'enum',
-        enum: ['training', 'camp', 'clinic']
+        enum: ['destination', 'activity', 'services']
     } )
     category: ProgramCategory;
 
