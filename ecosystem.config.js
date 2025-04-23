@@ -2,14 +2,14 @@
 module.exports = {
 	apps: [
 		{
-			name: "mugga-tours",
+			name: "muggatours",
 			script: "dist/app.js",
 			watch: false,
 			ignore_watch: ["dist"],
 			watch_options: {
 				"followSymlinks": false
 			},
-			instances: "max", // Use all available cores
+			instances: "max",
 			exec_mode: "cluster",
 			autorestart: false,
 			env: {
