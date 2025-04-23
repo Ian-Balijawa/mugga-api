@@ -23,6 +23,8 @@ import { logActivity } from './middlewares/activity-logger.middleware';
 import { contactRoutes } from './routes/contact.routes';
 import { newsLetterRoutes } from './routes/news-letter.routes';
 import alumniRoutes from './routes/alumni.routes';
+
+
 // Global error handlers
 process.on( 'uncaughtException', ( error: Error ) => {
   Logger.error( 'Uncaught Exception:', error );
@@ -41,7 +43,7 @@ setupSwagger( app );
 // Middleware
 app.use( helmet() );
 app.use( compression() );
-app.use(cors());
+app.use( cors() );
 
 app.use( morgan( 'common' ) );
 app.use( express.json() );
