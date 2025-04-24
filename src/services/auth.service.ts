@@ -1,7 +1,7 @@
 import { AppDataSource } from '../config/database.config';
 import { User } from '../entities/user.entity';
 import { AppError } from '../middlewares/error-handler.middleware';
-import jwt, { Secret, SignOptions } from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import env from '../config/env.config';
 import { SignupInput } from '../validators/auth.validator';
 import { hashPassword, comparePasswords } from '../utils/password.utils';
@@ -30,12 +30,10 @@ export class AuthService {
     }
 
     private generateToken( user: User ): string {
-        const options: SignOptions = { expiresIn: +env.JWT_EXPIRES_IN };
         const secret: Secret = env.JWT_SECRET;
         return jwt.sign(
             { userId: user.id, roles: user.roles },
             secret,
-            options
         );
     }
 
