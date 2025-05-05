@@ -1,25 +1,25 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
-export type PostCategory = 'news' | 'events' | 'updates';
+export type PostCategory = 'news' | 'events' | 'updates' | 'announcements';
 
-@Entity('posts')
+@Entity( 'posts' )
 export class Post extends BaseEntity {
     @Column()
     title: string;
 
-    @Column('text')
+    @Column( 'text' )
     content: string;
 
-    @Column({ nullable: true })
+    @Column( { nullable: true } )
     imageUrl?: string;
 
-    @Column({ nullable: true })
+    @Column( { nullable: true } )
     videoUrl?: string;
 
-    @Column({
+    @Column( {
         type: 'enum',
         enum: ['news', 'events', 'updates']
-    })
+    } )
     category: PostCategory;
 }
