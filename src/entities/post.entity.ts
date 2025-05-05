@@ -19,7 +19,7 @@ export class Post extends BaseEntity {
 
     @Column( {
         type: 'enum',
-        enum: ['news', 'events', 'updates']
+        enum: ['news', 'events', 'updates', 'announcements']
     } )
     category: PostCategory;
 }
